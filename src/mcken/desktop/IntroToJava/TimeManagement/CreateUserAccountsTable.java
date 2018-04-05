@@ -13,6 +13,7 @@ public class CreateUserAccountsTable {
 	private static final String DB_USER = "";
 	private static final String DB_PASSWORD = "";
 
+	/*
 	public static void main(String[] argv) {
 		try {
 			createUserAccountTable(); 
@@ -20,15 +21,15 @@ public class CreateUserAccountsTable {
 			System.out.println(e.getMessage());
 		}
 	}
+	*/
 
-	private static void createUserAccountTable() throws SQLException {
+	public static void createUserAccountTable() throws SQLException {
 		Connection dbConnection = null;
 		Statement statement = null;
 		String createTableSQL = "CREATE TABLE UserAccounts"
 				+"(UserID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 100, INCREMENT BY 1), " 
 				+"UserName varchar(40) NOT NULL, " 
-				+"Email varchar(40) NOT NULL, " 
-				+"Age integer NOT NULL, " 
+				+"Email varchar(40) NOT NULL, "  
 				+"PhoneNum varchar(40) NOT NULL,"
 				+ "Password varchar(40) NOT NULL, "
 				+ "Admin boolean, "
@@ -53,7 +54,7 @@ public class CreateUserAccountsTable {
 		}
 	}
 
-	private static Connection getDBConnection() {
+	public static Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
 			Class.forName(DB_DRIVER);
@@ -69,7 +70,7 @@ public class CreateUserAccountsTable {
 		return dbConnection;
 	}
 	
-	private static void deleteTable() throws SQLException {
+	public static void deleteTable() throws SQLException {
 		
 		Connection dbConnection = null;
 		Statement statement = null;

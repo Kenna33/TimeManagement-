@@ -2,8 +2,12 @@ package mcken.desktop.IntroToJava.TimeManagement;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 public class UserAccountGateway {
@@ -70,6 +74,51 @@ public class UserAccountGateway {
 		}
 	}
 	
+	public UserAccount findUser(String condition) throws SQLException {
+		UserAccount user = null; 
+		Connection dbConnection = null;
+		Statement statement = null;
+		
+		try {
+			dbConnection = getDBConnection();
+			statement = dbConnection.createStatement();
+			System.out.println(condition);
+			// execute delete SQL statement
+			ResultSet rs = statement.executeQuery(condition);
+			
+			if(rs.next()) {
+				user = new UserAccount(); 
+				int id = rs.getInt("USERID");
+				String UserName = rs.getString("USERNAME"); 
+				String email = rs.getString("EMAIL"); 
+				String phoneNum = rs.getString("PHONENUM"); 
+				String password = rs.getString("PASSWORD");
+				Boolean admin = rs.getBoolean("ADMIN"); 
+				user.setUserID(id);
+				user.setUserName(UserName);
+				user.setEmail(email);
+				user.setPhoneNum(phoneNum);
+				user.setPassword(password);
+				user.setAdmin(admin); 		
+			}else {
+				System.out.println("No data found for input query");
+				throw new RuntimeException(); 
+			}
+			System.out.println("Record is found from EMPLOYEE table!");
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	
+		return user; 
+	}
 	
 	private static Connection getDBConnection() {
 		Connection dbConnection = null;
