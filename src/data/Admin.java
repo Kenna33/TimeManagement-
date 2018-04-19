@@ -1,17 +1,14 @@
-package mcken.desktop.IntroToJava.TimeManagement;
+package data;
 
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CreateUserAccountsTable {
+import Connection.ConnectionFactory;
+
+public class Admin {
 	
-	private static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	private static final String DB_CONNECTION = "jdbc:derby:connection1;";
-	private static final String DB_USER = "";
-	private static final String DB_PASSWORD = "";
 
 	/*
 	public static void main(String[] argv) {
@@ -36,7 +33,7 @@ public class CreateUserAccountsTable {
 				+ "PRIMARY KEY (UserID) " + ")";;
 		
 		try {
-			dbConnection = getDBConnection();
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
 			System.out.println(createTableSQL);
 			// execute the SQL statement
@@ -54,21 +51,6 @@ public class CreateUserAccountsTable {
 		}
 	}
 
-	public static Connection getDBConnection() {
-		Connection dbConnection = null;
-		try {
-			Class.forName(DB_DRIVER);
-		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		try {
-			dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
-			return dbConnection;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return dbConnection;
-	}
 	
 	public static void deleteTable() throws SQLException {
 		
@@ -78,7 +60,7 @@ public class CreateUserAccountsTable {
 		
 		
 		try {
-			dbConnection = getDBConnection();
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
 			System.out.println(createString);
 			// execute the SQL statement
@@ -95,6 +77,43 @@ public class CreateUserAccountsTable {
 			}
 		}
 	}
+	
+	
+	
+	public static void createTasksTable() throws SQLException {
+		Connection dbConnection = null;
+		Statement statement = null;
+		String createTableSQL = "CREATE TABLE Tasks"
+				+"(TaskID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 100, INCREMENT BY 1), " 
+				+"Name varchar(40) NOT NULL, " 
+				+"DueDate varchar(40) NOT NULL, "  
+				+"Priority integer NOT NULL,"
+				+ "Progress integer NOT NULL, "
+				+ "GroupID bigint NOT NULL, "
+				+ "Description varchar(40) NOT NULL, "
+				+ "UserID bigint NOT NULL, "
+				+ "PRIMARY KEY (TaskID) " + ")";;
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			System.out.println(createTableSQL);
+			// execute the SQL statement
+			statement.execute(createTableSQL);
+			System.out.println("Table Tasks is created!");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	}
+	
+	
 }
 
 

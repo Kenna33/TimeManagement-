@@ -1,4 +1,4 @@
-package mcken.desktop.IntroToJava.TimeManagement;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,9 +9,13 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import data.Admin;
+import data.SQLUserAccountDOA;
+import data.UserAccount;
+
 
 class TestUserAccounts {
-	UserAccountGateway gate = null; 
+	SQLUserAccountDOA gate = null; 
 	UserAccount user = null; 
 	UserAccount user2 = null; 
 	List<UserAccount> list = null; 
@@ -21,7 +25,7 @@ class TestUserAccounts {
 	void TestSave() {
 		
 		//CreateUserAccountsTable create_delete = new CreateUserAccountsTable(); 
-		gate = new UserAccountGateway(); 
+		gate = new SQLUserAccountDOA(); 
 		user = new UserAccount();  
 		user2 = new UserAccount();  
 		list = new ArrayList<UserAccount>(); 
@@ -35,14 +39,14 @@ class TestUserAccounts {
 		list.add(user); 
  
 		try {
-			CreateUserAccountsTable.deleteTable();
+			Admin.deleteTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
 		}	
 		
 		try {
-			CreateUserAccountsTable.createUserAccountTable();
+			Admin.createUserAccountTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
@@ -70,7 +74,7 @@ class TestUserAccounts {
 	@Test
 	void testDelete() throws SQLException{
 		
-		gate.delete(100);
+		gate.deleteUser(100);
 
 		assertThrows(RuntimeException.class, ()-> {gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 100");}); 
 	}

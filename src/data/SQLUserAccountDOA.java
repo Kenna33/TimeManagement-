@@ -1,21 +1,16 @@
-package mcken.desktop.IntroToJava.TimeManagement;
+package data;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
+import Connection.ConnectionFactory;
 
 
-public class UserAccountGateway {
+public class SQLUserAccountDOA implements UserAccountDOA{
 
-	private static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	private static final String DB_CONNECTION = "jdbc:derby:connection1;";
-	private static final String DB_USER = "";
-	private static final String DB_PASSWORD = "";
 	
 	public void save(UserAccount user) throws SQLException { 
 		String insertTableSQL = null; 
@@ -30,7 +25,7 @@ public class UserAccountGateway {
 		Statement statement = null;
 		
 		try {
-			dbConnection = getDBConnection();
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
 			System.out.println(insertTableSQL);
 			// execute insert SQL statement
@@ -46,16 +41,15 @@ public class UserAccountGateway {
 				dbConnection.close();
 			}
 		}
-		
 	}
 	
-	public void delete(Integer thisID) throws SQLException {
+	public void deleteUser(Integer thisID) throws SQLException {
 		if(thisID != null) {
 			Connection dbConnection = null;
 			Statement statement = null;
 			String deleteTableSQL = "DELETE FROM UserAccounts WHERE UserID = " + thisID;
 			try {
-				dbConnection = getDBConnection();
+				dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 				statement = dbConnection.createStatement();
 				System.out.println(deleteTableSQL);
 				// execute delete SQL statement
@@ -80,7 +74,7 @@ public class UserAccountGateway {
 		Statement statement = null;
 		
 		try {
-			dbConnection = getDBConnection();
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
 			System.out.println(condition);
 			// execute delete SQL statement
@@ -119,21 +113,56 @@ public class UserAccountGateway {
 	
 		return user; 
 	}
-	
-	private static Connection getDBConnection() {
-		Connection dbConnection = null;
-		try {
-			Class.forName(DB_DRIVER);
-		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		try {
-			dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
-			return dbConnection;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return dbConnection;
+
+	@Override
+	public List<UserAccount> findUserbyGroupId(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	@Override
+	public UserAccount findUserById(Integer id) throws SQLException {
+		UserAccount user = null; 
+		Connection dbConnection = null;
+		Statement statement = null;
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			String condition = "SELECT * FROM USERACCOUNTS WHERE USERID = " + id; 
+			ResultSet rs = statement.executeQuery(condition);
+			
+			if(rs.next()) {
+				user = new UserAccount(); 
+				int Id = rs.getInt("USERID");
+				String UserName = rs.getString("USERNAME"); 
+				String email = rs.getString("EMAIL"); 
+				String phoneNum = rs.getString("PHONENUM"); 
+				String password = rs.getString("PASSWORD");
+				Boolean admin = rs.getBoolean("ADMIN"); 
+				user.setUserID(Id);
+				user.setUserName(UserName);
+				user.setEmail(email);
+				user.setPhoneNum(phoneNum);
+				user.setPassword(password);
+				user.setAdmin(admin); 		
+			}else {
+				System.out.println("No data found for input query");
+				throw new RuntimeException(); 
+			}
+			System.out.println("Record is found from EMPLOYEE table!");
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	
+		return user; 
+	}
 }

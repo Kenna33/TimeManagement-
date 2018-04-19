@@ -1,6 +1,7 @@
-package mcken.desktop.IntroToJava.TimeManagement;
+package data;
 
-public class UserAccount {
+
+public class UserAccount{
 
 	private Integer UserID; 
 	private String UserName; 
@@ -9,7 +10,7 @@ public class UserAccount {
 	private String Password; 
 	private Boolean Admin;
 	
-	UserAccount(){
+	public UserAccount(){
 		UserID = null; 
 	}
 	
@@ -104,7 +105,5 @@ public class UserAccount {
 			return false;
 		return true;
 	}
-	
-	
 
 }
