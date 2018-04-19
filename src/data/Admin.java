@@ -86,7 +86,7 @@ public class Admin {
 		String createTableSQL = "CREATE TABLE Tasks"
 				+"(TaskID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 100, INCREMENT BY 1), " 
 				+"Name varchar(40) NOT NULL, " 
-				+"DueDate varchar(40) NOT NULL, "  
+				+"DueDate date NOT NULL, "  
 				+"Priority integer NOT NULL,"
 				+ "Progress integer NOT NULL, "
 				+ "GroupID bigint NOT NULL, "

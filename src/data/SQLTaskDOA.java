@@ -15,11 +15,9 @@ public class SQLTaskDOA implements TaskDOA{
 	public SQLTaskDOA() {
 		// TODO Auto-generated constructor stub
 	}
-
 	
 	@Override
-	public List<Task> findTaskbyUserId(Integer id) {
-		/*
+	public List<Task> findTaskbyUserId(Integer id) throws SQLException {
 		List<Task> list = new ArrayList<Task>(); 
 		Task task = null; 
 		Connection dbConnection = null;
@@ -42,12 +40,22 @@ public class SQLTaskDOA implements TaskDOA{
 				Integer groupId = rs.getInt("GROUPID"); 
 				Integer userId = rs.getInt("USERID"); 
 				
-				//	
+				task.setTaskID(Id);
+				task.setName(name);
+				task.setDueDate(duedate); 
+				task.setPriority(priority);
+				task.setProgress(progress);
+				task.setDescription(description);
+				task.setGroupID(groupId);
+				task.setUserID(userId);
+				
+				list.add(task); 
+				
 			}else {
 				System.out.println("No data found for input query");
 				throw new RuntimeException(); 
 			}
-			System.out.println("Record is found from EMPLOYEE table!");
+			System.out.println("Record is found from Tasks table!");
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -60,20 +68,94 @@ public class SQLTaskDOA implements TaskDOA{
 			}
 		}
 	
-		return user; 
-		*/
+		return list; 
 	}
 	
 
 	@Override
 	public void save(Task task) throws SQLException {
-		// TODO Auto-generated method stub
+		String insertTaskSQL = null; 
+	
+		insertTaskSQL = "INSERT INTO Tasks" + "(TASKID,NAME,DUEDATE,PRIORITY,PROGRESS,GROUPID,DESCRIPTION,USERID) " + "VALUES"
+					+ "(" + task.getTaskID() + ", '" + task.getName() + "', " +
+					task.getDueDate() + ", " + 
+					task.getPriority() + ", " + task.getProgress()  + ", " + task.getGroupID()
+					+ ", '" + task.getDescription() + "', " + task.getUserID() + ")";
+		
+		
+		Connection dbConnection = null;
+		Statement statement = null;
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			System.out.println(insertTaskSQL);
+			// execute insert SQL statement
+			statement.executeUpdate(insertTaskSQL);
+			System.out.println("Record is inserted into UserAccounts table!");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
 		
 	}
 
 	@Override
-	public void deleteTask(Integer id) throws SQLException {
-		// TODO Auto-generated method stub
+	public void deleteTaskFromTaskID(Integer id) throws SQLException {
+		if(id != null) {
+			Connection dbConnection = null;
+			Statement statement = null;
+			String deleteTaskSQL = "DELETE FROM Tasks WHERE TaskID = " + id;
+			try {
+				dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+				statement = dbConnection.createStatement();
+				System.out.println(deleteTaskSQL);
+				// execute delete SQL statement
+				statement.execute(deleteTaskSQL);
+				System.out.println("Record is deleted from Tasks table!");
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			} finally {
+				if (statement != null) {
+					statement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void deleteTaskFromUserID(Integer id) throws SQLException {
+		if(id != null) {
+			Connection dbConnection = null;
+			Statement statement = null;
+			String deleteTaskSQL = "DELETE FROM Tasks WHERE UserID = " + id;
+			try {
+				dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+				statement = dbConnection.createStatement();
+				System.out.println(deleteTaskSQL);
+				// execute delete SQL statement
+				statement.execute(deleteTaskSQL);
+				System.out.println("Record is deleted from Tasks table!");
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			} finally {
+				if (statement != null) {
+					statement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			}
+		}
 		
 	}
 
