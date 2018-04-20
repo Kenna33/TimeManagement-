@@ -1,5 +1,6 @@
 package data;
 
+import java.util.List;
 
 public class UserAccount{
 
@@ -8,11 +9,20 @@ public class UserAccount{
 	private String Email; 
 	private String PhoneNum; 
 	private String Password; 
+	private List<Group> groupList; 
 	
 	public UserAccount(){
 		UserID = null; 
 	}
 	
+	public List<Group> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<Group> groupList) {
+		this.groupList = groupList;
+	}
+
 	public Integer getUserID() {
 		return UserID;
 	}

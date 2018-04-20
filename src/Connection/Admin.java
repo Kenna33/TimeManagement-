@@ -1,11 +1,9 @@
-package data;
+package Connection;
 
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import Connection.ConnectionFactory;
 
 public class Admin {
 	
@@ -177,7 +175,7 @@ public class Admin {
 			System.out.println(createString);
 			// execute the SQL statement
 			statement.execute(createString);
-			System.out.println("Table Tasks is deleted!");
+			System.out.println("Table Groups is deleted!");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {

@@ -130,6 +130,7 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 			String condition = "SELECT * FROM USERACCOUNTS WHERE USERID = " + id; 
 			ResultSet rs = statement.executeQuery(condition);
 			
+			
 			if(rs.next()) {
 				user = new UserAccount(); 
 				int Id = rs.getInt("USERID");
@@ -160,5 +161,43 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 		}
 	
 		return user; 
+	}
+
+	@Override
+	public Integer findUserBySignIn(String userName, String passwrd) throws SQLException {
+		UserAccount user = null; 
+		Connection dbConnection = null;
+		Statement statement = null;
+		Integer Id = null; 
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			String condition = "SELECT UserID FROM USERACCOUNTS WHERE UserName = '" + userName + "' AND Password = '"
+					+ passwrd + "'"; 
+			ResultSet rs = statement.executeQuery(condition);
+			System.out.println(condition);
+			
+			if(rs.next()) {
+				Id = rs.getInt("USERID");
+				System.out.println("Record is found from EMPLOYEE table!");
+				
+			}else {
+				System.out.println("No data found for input query");
+			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	
+		return Id; 
 	}
 }

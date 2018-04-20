@@ -22,7 +22,7 @@ public class SQLGroupDOA implements GroupDOA{
 		try {
 			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
-			String condition = "SELECT * FROM GROUP WHERE USERID = " + id; 
+			String condition = "SELECT * FROM Groups WHERE USERID = " + id; 
 			ResultSet rs = statement.executeQuery(condition);
 			
 			if(rs.next()) {
@@ -53,7 +53,6 @@ public class SQLGroupDOA implements GroupDOA{
 				dbConnection.close();
 			}
 		}
-	
 		return list; 
 	}
 
@@ -61,10 +60,9 @@ public class SQLGroupDOA implements GroupDOA{
 	public void save(Group group) throws SQLException {
 		String insertGroupSQL = null; 
 		
-		insertGroupSQL = "INSERT INTO Groups" + "(NAME,GROUPID,USERID) " + "VALUES"
+		insertGroupSQL = "INSERT INTO Groups" + "(NAME,USERID) " + "VALUES"
 					+ "('" + group.getName() +  
-				    "', " + group.getGroupID()  + ", " + group.getUserID()
-					 + ")";
+				    "', "  + group.getUserID() + ")";
 		
 		
 		Connection dbConnection = null;

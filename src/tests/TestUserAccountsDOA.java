@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import data.Admin;
+import Connection.Admin;
 import data.SQLUserAccountDOA;
 import data.UserAccount;
 
@@ -71,9 +71,6 @@ class TestUserAccountsDOA {
 	}
 
 	
-	
-	
-	
 	@Test
 	void testDelete() throws SQLException{
 		
@@ -82,6 +79,21 @@ class TestUserAccountsDOA {
 		assertThrows(RuntimeException.class, ()-> {gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 1");}); 
 	}
 	
+	@Test
+	void testFindwithPassword() throws SQLException {
+		Integer id;  
+		
+		id = gate.findUserBySignIn("Kenna33", "Kenna123"); 
+		assert(id == 1);
+	}
+	
+	@Test
+	void failtestFindwithPassword() throws SQLException {
+		Integer id;  
+		
+		id = gate.findUserBySignIn("Kenna3", "Kenna13"); 
+		assert(id == null);
+	}
 		
 
 }

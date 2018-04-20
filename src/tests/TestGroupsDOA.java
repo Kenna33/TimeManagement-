@@ -2,7 +2,6 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,53 +10,49 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Connection.Admin;
-import data.SQLTaskDOA;
+import data.Group;
+import data.SQLGroupDOA;
 import data.SQLUserAccountDOA;
-import data.Task;
 import data.UserAccount;
 
-class TestTasksDOA {
+class TestGroupsDOA {
 
-	SQLTaskDOA gate = null; 
-	Task task1 = null; 
-	Task task2 = null; 
-	List<Task> list = null; 
+	SQLGroupDOA gate = null; 
+	Group group1 = null; 
+	Group group2 = null; 
+	List<Group> list = null; 
+
 	
 	@BeforeEach
 	void TestSave() {
 		
 		//CreateUserAccountsTable create_delete = new CreateUserAccountsTable(); 
-		gate = new SQLTaskDOA(); 
-		task1 = new Task(); 
-		task2 = new Task(); 
-		list = new ArrayList<Task>(); 
+		gate = new SQLGroupDOA(); 
+		group1 = new Group(); 
+		group2 = new Group(); 
+		list = new ArrayList<Group>(); 
 		
-		task1.setName("task1");
-		task1.setUserID(1);
-		task1.setProgress(1);
-		task1.setDescription("This is my third task");
-		task1.setDueDate(new Date(0, 0, 0));
-		task1.setGroupID(1);
-		task1.setPriority(1);
+		group1.setName("group1");
+		group1.setUserID(1);
+		
+		 
  
-		/*
 		try {
-			
+			Admin.deleteGroupsTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
 		}	
-		*/
 		
 		try {
-			Admin.createTasksTable();
+			Admin.createGroupsTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
 		}
 		
 		try {
-			gate.save(task1);
+			gate.save(group1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail("SQLExceptionThrown");
@@ -65,23 +60,23 @@ class TestTasksDOA {
 		
 		
 		try {
-			list = gate.findTaskbyGroupId(1);
+			list = gate.findGroupbyUserId(1);
 		} catch (SQLException e) {
 			fail("Data with ID 1 not found"); 
 		}
-		
-		//assert(list.contains(task1)); 
+		 
 	}
+
+	
+	
 	
 	
 	@Test
 	void testDelete() throws SQLException{
 		
-		gate.deleteTaskFromUserID(1);
+		gate.deleteGroupFromUserID(1);
 
-		assertThrows(RuntimeException.class, ()-> {gate.findTaskbyGroupId(1);}); 
+		assertThrows(RuntimeException.class, ()-> {gate.findGroupbyUserId(1);}); 
 	}
-	
-	
-}
 
+}

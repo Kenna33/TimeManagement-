@@ -29,13 +29,15 @@ public class Main {
                         loginDlg.setVisible(true);
                         // if login successfully
                         if(loginDlg.isSucceeded()){
+                        	//run display page 
                             btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+                            HomePage home = new HomePage(); 
                         }
                     }
                 });
  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(500,500);
         frame.setLayout(new FlowLayout());
         frame.getContentPane().add(btnLogin);
         frame.getContentPane().add(btnCreateAccount);

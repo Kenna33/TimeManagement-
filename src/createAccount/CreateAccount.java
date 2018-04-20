@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -19,6 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import data.SQLUserAccountDOA;
+import data.UserAccount;
+import data.UserAccountDOA;
 
 public class CreateAccount implements ActionListener {
 
@@ -54,7 +59,7 @@ public class CreateAccount implements ActionListener {
     public void go() {
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        panel.setBackground(Color.ORANGE);
+       // panel.setBackground(Color.GRAY);
 
         frame = new JFrame("Create a new account");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,8 +126,25 @@ public class CreateAccount implements ActionListener {
                     + new String(password.getPassword()));
             writer.close();
             
-            JOptionPane.showMessageDialog(frame,
-                    "Account Created!");
+            UserAccount user = new UserAccount(); 
+            user.setUserName(username.getText()); 
+            user.setEmail(email.getText());
+            user.setPhoneNum(phoneNum.getText());
+            String passwrd = ""; 
+            for(char a : password.getPassword()) {
+            	passwrd += Character.toString(a);
+            }
+            user.setPassword(passwrd);
+           
+            UserAccountDOA userDOA = new SQLUserAccountDOA(); 
+            try {
+				userDOA.save(user);
+				JOptionPane.showMessageDialog(frame,
+	                    "Account Created!");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             
             frame.dispose();
             
