@@ -15,10 +15,10 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 	public void save(UserAccount user) throws SQLException { 
 		String insertTableSQL = null; 
 		if(user.getUserID() == null) {
-			insertTableSQL = "INSERT INTO UserAccounts" + "(USERNAME,EMAIL,PHONENUM,PASSWORD,ADMIN) " + "VALUES"
+			insertTableSQL = "INSERT INTO UserAccounts" + "(USERNAME,EMAIL,PHONENUM,PASSWORD) " + "VALUES"
 					+ "('" + user.getUserName() + "'" + ", '" + user.getEmail() + "', '" +
 					user.getPhoneNum() + "', '" + 
-					user.getPassword() + "', " + user.getAdmin()  + ")";
+					user.getPassword() + "')";
 		}
 		
 		Connection dbConnection = null;
@@ -86,14 +86,12 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 				String UserName = rs.getString("USERNAME"); 
 				String email = rs.getString("EMAIL"); 
 				String phoneNum = rs.getString("PHONENUM"); 
-				String password = rs.getString("PASSWORD");
-				Boolean admin = rs.getBoolean("ADMIN"); 
+				String password = rs.getString("PASSWORD"); 
 				user.setUserID(id);
 				user.setUserName(UserName);
 				user.setEmail(email);
 				user.setPhoneNum(phoneNum);
-				user.setPassword(password);
-				user.setAdmin(admin); 		
+				user.setPassword(password);		
 			}else {
 				System.out.println("No data found for input query");
 				throw new RuntimeException(); 
@@ -139,13 +137,11 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 				String email = rs.getString("EMAIL"); 
 				String phoneNum = rs.getString("PHONENUM"); 
 				String password = rs.getString("PASSWORD");
-				Boolean admin = rs.getBoolean("ADMIN"); 
 				user.setUserID(Id);
 				user.setUserName(UserName);
 				user.setEmail(email);
 				user.setPhoneNum(phoneNum);
-				user.setPassword(password);
-				user.setAdmin(admin); 		
+				user.setPassword(password);	
 			}else {
 				System.out.println("No data found for input query");
 				throw new RuntimeException(); 

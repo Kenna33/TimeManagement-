@@ -16,9 +16,10 @@ public class Main {
         btnCreateAccount.addActionListener(
         		new ActionListener(){
                     public void actionPerformed(ActionEvent e) {
-                    	CreateAccount window = new CreateAccount();
-                        window.go();
+                    	CreateAccount createAccount = new CreateAccount();
+                        createAccount.go(); 
                     }
+                    
                 });
  
         btnLogin.addActionListener(

@@ -8,7 +8,6 @@ public class UserAccount{
 	private String Email; 
 	private String PhoneNum; 
 	private String Password; 
-	private Boolean Admin;
 	
 	public UserAccount(){
 		UserID = null; 
@@ -44,18 +43,11 @@ public class UserAccount{
 	public void setPassword(String password) {
 		Password = password;
 	}
-	public Boolean getAdmin() {
-		return Admin;
-	}
-	public void setAdmin(Boolean admin) {
-		Admin = admin;
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((Admin == null) ? 0 : Admin.hashCode());
 		result = prime * result + ((Email == null) ? 0 : Email.hashCode());
 		result = prime * result + ((Password == null) ? 0 : Password.hashCode());
 		result = prime * result + ((PhoneNum == null) ? 0 : PhoneNum.hashCode());
@@ -73,11 +65,6 @@ public class UserAccount{
 		if (getClass() != obj.getClass())
 			return false;
 		UserAccount other = (UserAccount) obj;
-		if (Admin == null) {
-			if (other.Admin != null)
-				return false;
-		} else if (!Admin.equals(other.Admin))
-			return false;
 		if (Email == null) {
 			if (other.Email != null)
 				return false;
@@ -105,5 +92,8 @@ public class UserAccount{
 			return false;
 		return true;
 	}
+	
+
+	
 
 }

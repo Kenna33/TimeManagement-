@@ -4,15 +4,6 @@ import java.sql.Date;
 
 public class Task {
 
-	//priority 
-	private final static int LOW = 1;
-	private final static int MEDIUM = 2; 
-	private final static int HIGH = 3; 
-	
-	//progress
-	private final static int NOT_STARTED = 1; 
-	private final static int STARTED = 2; 
-	private final static int FINISHED = 3; 
 	
 	private Integer taskID; 
 	private String name; 
@@ -41,6 +32,8 @@ public class Task {
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
+	
+	
 	public int getPriority() {
 		return priority;
 	}
@@ -71,5 +64,6 @@ public class Task {
 	public void setUserID(Integer userID) {
 		this.userID = userID;
 	} 
+	
 	
 }

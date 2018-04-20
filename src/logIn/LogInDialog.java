@@ -6,7 +6,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import createAccount.CreateAccount;
  
 public class LogInDialog extends JDialog {
  

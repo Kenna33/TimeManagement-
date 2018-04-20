@@ -24,12 +24,11 @@ public class Admin {
 		Connection dbConnection = null;
 		Statement statement = null;
 		String createTableSQL = "CREATE TABLE UserAccounts"
-				+"(UserID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 100, INCREMENT BY 1), " 
+				+"(UserID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (INCREMENT BY 1), " 
 				+"UserName varchar(40) NOT NULL, " 
 				+"Email varchar(40) NOT NULL, "  
 				+"PhoneNum varchar(40) NOT NULL,"
 				+ "Password varchar(40) NOT NULL, "
-				+ "Admin boolean, "
 				+ "PRIMARY KEY (UserID) " + ")";;
 		
 		try {
@@ -52,7 +51,7 @@ public class Admin {
 	}
 
 	
-	public static void deleteTable() throws SQLException {
+	public static void deleteUserAccountsTable() throws SQLException {
 		
 		Connection dbConnection = null;
 		Statement statement = null;
@@ -84,7 +83,7 @@ public class Admin {
 		Connection dbConnection = null;
 		Statement statement = null;
 		String createTableSQL = "CREATE TABLE Tasks"
-				+"(TaskID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 100, INCREMENT BY 1), " 
+				+"(TaskID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (INCREMENT BY 1), " 
 				+"Name varchar(40) NOT NULL, " 
 				+"DueDate date NOT NULL, "  
 				+"Priority integer NOT NULL,"
@@ -112,6 +111,85 @@ public class Admin {
 			}
 		}
 	}
+	
+	public static void deleteTasksTable() throws SQLException {
+		Connection dbConnection = null;
+		Statement statement = null;
+		String createString ="DROP TABLE Tasks";
+		
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			System.out.println(createString);
+			// execute the SQL statement
+			statement.execute(createString);
+			System.out.println("Table Tasks is deleted!");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	}
+	
+	public static void createGroupsTable() throws SQLException {
+		Connection dbConnection = null;
+		Statement statement = null;
+		String createTableSQL = "CREATE TABLE Groups"
+				+"(GroupID bigint NOT NULL GENERATED ALWAYS AS IDENTITY (INCREMENT BY 1), " 
+				+"Name varchar(40) NOT NULL, " 
+				+ "UserID bigint NOT NULL, "
+				+ "PRIMARY KEY (GroupID) " + ")";;
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			System.out.println(createTableSQL);
+			// execute the SQL statement
+			statement.execute(createTableSQL);
+			System.out.println("Table Groups is created!");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	}
+	
+	public static void deleteGroupsTable() throws SQLException {
+		Connection dbConnection = null;
+		Statement statement = null;
+		String createString ="DROP TABLE Groups";
+		
+		
+		try {
+			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
+			statement = dbConnection.createStatement();
+			System.out.println(createString);
+			// execute the SQL statement
+			statement.execute(createString);
+			System.out.println("Table Tasks is deleted!");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+		}
+	}
+	
 	
 	
 }

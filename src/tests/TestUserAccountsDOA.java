@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import data.Admin;
@@ -14,7 +15,7 @@ import data.SQLUserAccountDOA;
 import data.UserAccount;
 
 
-class TestUserAccounts {
+class TestUserAccountsDOA {
 	SQLUserAccountDOA gate = null; 
 	UserAccount user = null; 
 	UserAccount user2 = null; 
@@ -30,7 +31,6 @@ class TestUserAccounts {
 		user2 = new UserAccount();  
 		list = new ArrayList<UserAccount>(); 
 		
-		user.setAdmin(true);
 		user.setUserName("Kenna33");
 		user.setPhoneNum("555-971-1155");
 		user.setEmail("McKenna_Woodrow@baylor.edu");
@@ -39,7 +39,7 @@ class TestUserAccounts {
 		list.add(user); 
  
 		try {
-			Admin.deleteTable();
+			Admin.deleteUserAccountsTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
@@ -61,22 +61,25 @@ class TestUserAccounts {
 		
 		
 		try {
-			user2 = gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 100");
+			user2 = gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 1");
 		} catch (SQLException e) {
-			fail("Data with ID 100 not found"); 
+			fail("Data with ID 1 not found"); 
 		}
 		
-		user.setUserID(100);
+		user.setUserID(1);
 		assert(user.equals(user2)); 
 	}
+
+	
+	
 	
 	
 	@Test
 	void testDelete() throws SQLException{
 		
-		gate.deleteUser(100);
+		gate.deleteUser(1);
 
-		assertThrows(RuntimeException.class, ()-> {gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 100");}); 
+		assertThrows(RuntimeException.class, ()-> {gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 1");}); 
 	}
 	
 		

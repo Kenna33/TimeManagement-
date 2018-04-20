@@ -2,6 +2,7 @@ package createAccount;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,22 +15,23 @@ import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 public class CreateAccount implements ActionListener {
 
-    JFrame          frame;
-    JPanel          panel;
-    JTextField      username;
-    JTextField 	    email; 
-    JTextField      phoneNum; 
-    JPasswordField  password;
-    JPasswordField  confirmPassword;
-    JLabel          warningLabel;
+	JFrame          frame;
+	JPanel          panel;
+	JTextField      username;
+	JTextField 	    email; 
+	JTextField      phoneNum; 
+	JPasswordField  password;
+	JPasswordField  confirmPassword;
+	JLabel          warningLabel;
+	JLabel          success; 
+	
 
     /*
     public static void main(String[] args) {
@@ -99,6 +101,7 @@ public class CreateAccount implements ActionListener {
 
         frame.setSize(300, 250);
         frame.setVisible(true);
+        
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -117,9 +120,16 @@ public class CreateAccount implements ActionListener {
             writer.write(username.getText() + "/"
                     + new String(password.getPassword()));
             writer.close();
+            
+            JOptionPane.showMessageDialog(frame,
+                    "Account Created!");
+            
+            frame.dispose();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-}
+       }    
+   }
+    
 }
