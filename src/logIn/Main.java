@@ -42,7 +42,6 @@ public class Main {
                         // if login successfully
                         if(loginDlg.isSucceeded()){
                         	//run display page 
-                            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
                             
                             UserService us = new UserService(checkLogin.getID());
             				GroupListModel listModel = new GroupListModel(us);

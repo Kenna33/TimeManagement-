@@ -50,10 +50,12 @@ public class UserService extends Observable implements UserServiceInterface{
 		groupList = groupDOA.findGroupbyUserId(user.getUserID());
 
 		// Get groups tasks
+		/*
 		for (Group group : groupList) {
 			List<Task> groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
 			group.getTaskList().addAll(groupsTasks);
 		}
+		*/
 	}
 
 
@@ -61,18 +63,18 @@ public class UserService extends Observable implements UserServiceInterface{
 	public ServiceResponse saveGroup(Group group) {
 		if (group.getName().equals("")) {
 			return new ServiceResponse(false, "Cannot Save group with no name!!");
-		}else {
+		}
 
 		// Save the farmer, or update if they have id
 			if (group.getGroupID() == null) {
 				group.setUserID(user.getUserID());
 				groupDOA.save(group); 
-				return new ServiceResponse(true, "Save successful");
+				
 	
 			}else {	
 				assert(group.getUserID() != null);
 				groupDOA.updateGroup(group);
-				return new ServiceResponse(true, "Save successful");
+				
 			}
 			
 	
@@ -84,18 +86,18 @@ public class UserService extends Observable implements UserServiceInterface{
 				*/
 	
 				// Update the list that service provides
-				//updateFarmerList();
+				updateGroupList(); 
 	
-				// Let everyone know that there is a new farmer
-				//setChanged();
+				// Let everyone know that there is a new group
+				setChanged();
 	
-				//Map<String, Integer> changes = new HashMap<>();
-				//changes.put("new", farmers.size());
+				Map<String, Integer> changes = new HashMap<>();
+				changes.put("new", groupList.size());
 	
-				//notifyObservers(changes);
-	
+				notifyObservers(changes);
 				
-		}
+				return new ServiceResponse(true, "Save successful");
+		
 	}
 
 

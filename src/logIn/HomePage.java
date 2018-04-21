@@ -150,8 +150,8 @@ public class HomePage extends Observable {
 		JMenu mnMenu = new JMenu("Menu");
 		menuBar.add(mnMenu);
 
-		JMenuItem addFarmerBtn = new JMenuItem("Add Group");
-		addFarmerBtn.addActionListener(new ActionListener() {
+		JMenuItem addGroupBtn = new JMenuItem("Add Group");
+		addGroupBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
@@ -163,7 +163,7 @@ public class HomePage extends Observable {
 				});
 			}
 		});
-		mnMenu.add(addFarmerBtn);
+		mnMenu.add(addGroupBtn);
 		
 		final JLabel warningLabel = new JLabel("");
 		warningLabel.setForeground(Color.RED);
@@ -213,7 +213,7 @@ public class HomePage extends Observable {
 				JList list = (JList) evt.getSource();
 				selectedGroup = (Group) list.getSelectedValue();
 
-				// The selected farmer has changed. Notify anyone who cares.
+				// The selected group has changed. Notify anyone who cares.
 				myHomePage.setChanged();
 				myHomePage.notifyObservers(selectedGroup);
 
