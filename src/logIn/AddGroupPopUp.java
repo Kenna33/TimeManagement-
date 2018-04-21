@@ -91,6 +91,7 @@ public class AddGroupPopUp extends JFrame {
 		panel.add(textField);
 		textField.setColumns(10);
 		textField.setText(groupInQuestion.getName());
+		//System.out.println((groupInQuestion.getName());
 		
 		Component verticalGlue = Box.createVerticalGlue();
 		verticalBox.add(verticalGlue);

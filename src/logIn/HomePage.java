@@ -100,7 +100,7 @@ public class HomePage extends Observable {
 		JList<Group> groupList = new JList<>(groupListModel);
 		groupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		groupList.setBackground(new Color(255, 255, 255));
-		verticalBox.add(groupList);
+		verticalBox.add(groupList.getName(), groupList);
 
 		JSeparator separator = new JSeparator();
 		verticalBox.add(separator);

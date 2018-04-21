@@ -9,5 +9,4 @@ public class TaskSelectionListener implements ListSelectionListener{
 	public void valueChanged(ListSelectionEvent e) {
 		System.out.print(e.getFirstIndex());
 	}
-
 }

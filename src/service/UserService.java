@@ -103,10 +103,34 @@ public class UserService extends Observable implements UserServiceInterface{
 
 	@Override
 	public ServiceResponse deleteGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+
+		// Delete the farmer
+		try {
+			groupDOA.deleteGroupFromGroupID(group.getGroupID());
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+			// Find where the farmer was in the list
+			int positionRemoved = groupList.indexOf(group);
+
+			// Update the list that service provides
+			updateGroupList();
+
+			// Let everyone know that there is a new farmer
+			setChanged();
+
+			Map<String, Integer> changes = new HashMap<>();
+			changes.put("remove", positionRemoved);
+
+			notifyObservers(changes);
+
+			// Return success message
+			return new ServiceResponse(true, "Deletion Successful");
+			
+		//return new ServiceResponse(false, "Deletion Failed");
 	}
-
-
 
 }
