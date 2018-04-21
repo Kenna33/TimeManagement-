@@ -6,6 +6,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import service.UserService;
+
  
 public class LogInDialog extends JDialog {
  

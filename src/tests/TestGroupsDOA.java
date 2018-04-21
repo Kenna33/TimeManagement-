@@ -51,12 +51,7 @@ class TestGroupsDOA {
 			fail("SQLExceptionThrown");
 		}
 		
-		try {
-			gate.save(group1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail("SQLExceptionThrown");
-		}	
+		gate.save(group1);	
 		
 		
 		try {

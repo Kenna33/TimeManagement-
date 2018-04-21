@@ -8,7 +8,7 @@ import data.UserAccount;
 
 public interface UserServiceInterface {
 	public List<Group> getGroups();
-	public ServiceResponse savegroup(Group group);
-	public ServiceResponse deleteGroupk(Group group);
+	public ServiceResponse saveGroup(Group group);
+	public ServiceResponse deleteGroup(Group group);
 	public ServiceResponse updateGroup(Group group);
 }

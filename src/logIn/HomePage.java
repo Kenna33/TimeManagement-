@@ -1,151 +1,252 @@
-package view;
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Observable;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 
-import data.Farmer;
-import service.FarmerService;
-import service.FarmerServiceInterface;
+import service.GroupServiceInterface;
 import service.ServiceResponse;
-import service.UserService;
 import service.UserServiceInterface;
 
-import javax.swing.JLabel;
-import javax.swing.Box;
-import javax.swing.UIManager;
-import javax.swing.JTextField;
-import javax.swing.JSeparator;
 import java.awt.Component;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
+import javax.swing.Box;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.ListModel;
+
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
+import javax.swing.UIManager;
+import javax.swing.JSeparator;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.EtchedBorder;
 
-public class HomePage extends JFrame {
+import data.Group;
+import data.Task;
+import model.ObservantTableModel;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textField;
+import javax.swing.JButton;
 
-	
+public class HomePage extends Observable {
 
+	private JFrame TimeManagementHome;
+	private JTable TasksTable;
+	private Group selectedGroup;
+	private List<Task> clickedTasks;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HomePage frame = new HomePage(new UserService());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+		
+	}
+
+	/**
+	 * Create the application.
+	 * @wbp.parser.entryPoint
+	 */
+	public HomePage(ListModel<Group> glm, ObservantTableModel<List<Task>> st, UserServiceInterface usi) {
+		initialize(glm, st, usi);
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize(ListModel<Group> glm, ObservantTableModel<List<Task>> otm, final UserServiceInterface usi) {
+
+		// Make a GroupListModel for the list
+		ListModel<Group> groupListModel = glm;
+
+		// Make a SelectedTaskTableModel
+		ObservantTableModel<List<Task>> selectedTasks = otm;
+		
+		TimeManagementHome = new JFrame();
+		TimeManagementHome.setTitle("Time Management Planner");
+		TimeManagementHome.setBounds(100, 100, 450, 300);
+		TimeManagementHome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JSplitPane splitPane = new JSplitPane();
+		TimeManagementHome.getContentPane().add(splitPane, BorderLayout.CENTER);
+
+		JSplitPane splitPane_1 = new JSplitPane();
+		splitPane_1.setBackground(UIManager.getColor("Button.background"));
+		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setLeftComponent(splitPane_1);
+
+		JLabel lblNewLabel = new JLabel("Groups");
+		lblNewLabel.setBackground(Color.YELLOW);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		splitPane_1.setLeftComponent(lblNewLabel);
+
+		Box verticalBox = Box.createVerticalBox();
+		splitPane_1.setRightComponent(verticalBox);
+
+		JList<Group> groupList = new JList<>(groupListModel);
+		groupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		groupList.setBackground(new Color(255, 255, 255));
+		verticalBox.add(groupList);
+
+		JSeparator separator = new JSeparator();
+		verticalBox.add(separator);
+
+		Component horizontalStrut = Box.createHorizontalStrut(150);
+		verticalBox.add(horizontalStrut);
+
+		JSplitPane splitPane_2 = new JSplitPane();
+		splitPane_2.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setRightComponent(splitPane_2);
+
+		JLabel lblNewLabel_1 = new JLabel("Tasks");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		splitPane_2.setLeftComponent(lblNewLabel_1);
+
+		Box verticalBox_1 = Box.createVerticalBox();
+		splitPane_2.setRightComponent(verticalBox_1);
+		
+		TasksTable = new JTable(selectedTasks);
+		TasksTable.setFillsViewportHeight(true);
+		TasksTable.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				ObservantTableModel<List<Task>> taskModel = (ObservantTableModel<List<Task>>)table.getModel();
+				int[] selected = table.getSelectedRows();
+				final List<Task> allSelectedTasks = taskModel.getObservedValue();
+				clickedTasks = new ArrayList<Task>();
+				for(Integer taskIndex: selected) {
+					clickedTasks.add(allSelectedTasks.get(taskIndex));
 				}
 			}
-		});
-	}
-	
-	public HomePage(final UserServiceInterface usi) {
-		this(usi, null);
-	}
+		});;
+		
+		JScrollPane scrollPane = new JScrollPane(TasksTable);
+		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		verticalBox_1.add(scrollPane);
+		
 
-	public HomePage(final UserServiceInterface usi, UserAccount user) {
-		
-		// Retain reference to this under different name
-		final AddFarmerPopUp window = this;
-		
-		// Make a farmer or reuse a farmer
-		Farmer farmerInQuestion = oldFarmer == null ? new Farmer() : oldFarmer;
-		
-		setTitle(oldFarmer == null ? "Add new Farmer" : "Change farmer's name");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(null);
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		Box verticalBox = Box.createVerticalBox();
-		verticalBox.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		contentPane.add(verticalBox, BorderLayout.CENTER);
-		
-		JPanel panel = new JPanel();
-		verticalBox.add(panel);
-		
-		JLabel lblNewLabel = new JLabel(oldFarmer == null ? "New Farmer's Name" : "Farmer's New Name");
-		panel.add(lblNewLabel);
-		
-		JSeparator separator = new JSeparator();
-		panel.add(separator);
-		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
-		textField.setText(farmerInQuestion.getName());
-		
-		Component verticalGlue = Box.createVerticalGlue();
-		verticalBox.add(verticalGlue);
-		
-		Box horizontalBox = Box.createHorizontalBox();
-		verticalBox.add(horizontalBox);
-		
-		JButton cancelBtn = new JButton("Cancel");
-		cancelBtn.setHorizontalAlignment(SwingConstants.LEFT);
-		horizontalBox.add(cancelBtn);
-		cancelBtn.addActionListener(new ActionListener() {
+		Component horizontalStrut_1 = Box.createHorizontalStrut(200);
+		verticalBox_1.add(horizontalStrut_1);
 
+		JMenuBar menuBar = new JMenuBar();
+		TimeManagementHome.setJMenuBar(menuBar);
+
+		JMenu mnMenu = new JMenu("Menu");
+		menuBar.add(mnMenu);
+
+		JMenuItem addFarmerBtn = new JMenuItem("Add Group");
+		addFarmerBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				window.dispose();
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						AddGroupPopUp popUp = new AddGroupPopUp(usi);
+						popUp.setVisible(true);
+					}
+				});
 			}
-			
 		});
-		
-		Component horizontalGlue = Box.createHorizontalGlue();
-		horizontalBox.add(horizontalGlue);
-		
-		JButton saveBtn = new JButton("Save");
-		saveBtn.setHorizontalAlignment(SwingConstants.RIGHT);
-		horizontalBox.add(saveBtn);
+		mnMenu.add(addFarmerBtn);
 		
 		final JLabel warningLabel = new JLabel("");
 		warningLabel.setForeground(Color.RED);
-		contentPane.add(warningLabel, BorderLayout.NORTH);
-		saveBtn.addActionListener(new ActionListener() {
+		menuBar.add(warningLabel);
+		
+		JMenuItem editFarmerBtn = new JMenuItem("Edit Farmer");
+		editFarmerBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(selectedGroup == null) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("Select a Group first!!!");
+					return;
+				}
+				AddGroupPopUp popUp = new AddGroupPopUp(usi, selectedGroup);
+				farmerList.clearSelection();
+				popUp.setVisible(true);
+			}
+			
+		});
+		mnMenu.add(editFarmerBtn);
+
+		JMenuItem removeGroupBtn = new JMenuItem("Remove Group");
+		removeGroupBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(selectedGroup == null) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("Select a Group first!!");
+					return;
+				}
+				ServiceResponse response = usi.deleteGroup(selectedGroup);
+				warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
+				warningLabel.setText(response.getMessage());
+			}
+
+		});
+		mnMenu.add(removeGroupBtn);
+
+		
+		
+
+		final HomePage myHomePage = this;
+		farmerList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				JList list = (JList) evt.getSource();
+				selectedFarmer = (Farmer) list.getSelectedValue();
+
+				// The selected farmer has changed. Notify anyone who cares.
+				myWindow.setChanged();
+				myWindow.notifyObservers(selectedFarmer);
+
+			}
+		});
+		
+		JButton transferBtn = new JButton("Transfer Cow");
+		verticalBox_1.add(transferBtn);
+		transferBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				// update the name with the current text field value
-				farmerInQuestion.setName(textField.getText());
-				
-				// save the new farmer
-				ServiceResponse response = fsi.saveFarmer(farmerInQuestion);
-				
-				if(response.isSuccess()) {
-					// dispose of the window
-					window.dispose();
+				if(clickedCows == null || clickedCows.size() == 0) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("You must pick cows to transfer first!!");
+					return;
 				}
-				
-				// something went wrong with saving
-				warningLabel.setText(response.getMessage());
-				
+				myWindow.setChanged();
+				myWindow.notifyObservers(null);
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						TransferCowPopUp popup = new TransferCowPopUp(lm, fsi, clickedCows);
+						clickedCows = new ArrayList<>();
+						popup.setVisible(true);
+					}
+				});
 			}
 			
 		});
 	}
+	
+	public void setVisible(boolean visibility) {
+		frmFarmersHashcows.setVisible(visibility);
+	}
 
 }
+

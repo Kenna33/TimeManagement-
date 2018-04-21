@@ -2,6 +2,7 @@ package data;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -56,8 +57,9 @@ public class SQLGroupDOA implements GroupDOA{
 		return list; 
 	}
 
+	/*
 	@Override
-	public void save(Group group) throws SQLException {
+	public boolean save(Group group) throws SQLException {
 		String insertGroupSQL = null; 
 		
 		insertGroupSQL = "INSERT INTO Groups" + "(NAME,USERID) " + "VALUES"
@@ -86,6 +88,26 @@ public class SQLGroupDOA implements GroupDOA{
 			}
 		}
 		
+	}
+	*/ 
+	
+	@Override
+	public boolean save(Group group) {
+		Connection sqlConnection;
+		try {
+			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement statement = sqlConnection.prepareStatement("INSERT INTO Groups (NAME,USERID) VALUES (?,?)");
+			statement.setString(1, group.getName());
+			statement.setLong(2, group.getUserID());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// Should replace with log message
+			System.out.println("Could not save the group");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -139,8 +161,23 @@ public class SQLGroupDOA implements GroupDOA{
 				}
 			}
 		}
-		
-		
 	}
+
+	@Override
+	public boolean updateGroup(Group group) {
+			try {
+				Connection connection = ConnectionFactory.getInstance().getDBConnection();
+				PreparedStatement ps = connection.prepareStatement("UPDATE Groups SET name = ? WHERE GroupID = ?");
+				ps.setString(1, group.getName());
+				ps.setInt(2, group.getGroupID());
+				ps.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return false;
+	}
+		
+	
 
 }

@@ -1,0 +1,41 @@
+[33mcommit 83e07a36a76502cf0517de522fbb3b77ede4a0f8[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Fri Apr 20 02:07:11 2018 -0500
+
+    implemented login and create account with userinterface and database
+
+[33mcommit fbb5de1778d54ff4d95b5354c6c2b5d4d8a8f26a[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Thu Apr 19 22:53:12 2018 -0500
+
+    added group entity, tested tasksDOA
+
+[33mcommit 03fb60b9cbff7c0321b2cd1697f219299fdfc4cc[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Thu Apr 19 18:44:16 2018 -0500
+
+    begin implementing userinterface for creating account and signing in
+
+[33mcommit 58c1d669910fda76f4a7e3477a46cc88f018b827[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Wed Apr 18 19:53:04 2018 -0500
+
+    refactoring, implementing interfaces, begin to add tasks
+
+[33mcommit 284e42d41f1a9181a0b4d53814c00a96a0ee6cd9[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Thu Apr 5 17:43:59 2018 -0500
+
+    adding new files
+
+[33mcommit 82357f946ffeab8f6e4aa2a06f5708a0039607ff[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Thu Apr 5 17:41:57 2018 -0500
+
+    Testing save and delete in userAccountGateway
+
+[33mcommit 725525c74afca3f7efd62dd9ea175b347f8b6d63[m
+Author: Kenna33 <McKenna_Woodrow@baylor.edu>
+Date:   Thu Apr 5 15:16:40 2018 -0500
+
+    commit with db connection and UserAccount creation/access

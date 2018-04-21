@@ -31,7 +31,8 @@ public class Main {
                         if(loginDlg.isSucceeded()){
                         	//run display page 
                             btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
-                            HomePage home = new HomePage(); 
+                            
+                          //  HomePage home = new HomePage(); 
                         }
                     }
                 });
