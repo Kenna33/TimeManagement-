@@ -11,9 +11,9 @@ import data.Task;
 
 public class SelectedTasksTableModel extends AbstractTableModel implements ObservantTableModel<List<Task>>{
 	
-	private static final String[] taskFields = {"id", "Name", "Cost"};
+	private static final String[] taskFields = {"Name", "Description", "Priority", "Progress", "Due Date"};
 	
-	private List<Task> selectedCows = new ArrayList<Task>();
+	private List<Task> selectedTasks = new ArrayList<Task>();
 
 	public SelectedTasksTableModel() {
 		// TODO Auto-generated constructor stub

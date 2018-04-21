@@ -104,7 +104,7 @@ public class CreateAccount implements ActionListener {
         warningLabel = new JLabel();
         frame.getContentPane().add(BorderLayout.NORTH, warningLabel);
 
-        frame.setSize(300, 250);
+        frame.setSize(700, 500);
         frame.setVisible(true);
         
     }

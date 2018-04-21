@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.logging.Logger;
 
 import data.Group;
 import data.GroupDOA;
@@ -14,7 +16,8 @@ import data.TaskDOA;
 import data.UserAccount;
 import data.UserAccountDOA;
 
-public class UserService implements UserServiceInterface{
+public class UserService extends Observable implements UserServiceInterface{
+	private final static Logger LOGGER = Logger.getLogger(UserService.class.getName());
 	UserAccount user; 
 	private List<Group> groupList;  
 	private UserAccountDOA userDOA; 
@@ -29,16 +32,28 @@ public class UserService implements UserServiceInterface{
 		try {
 			user = userDOA.findUserById(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.severe("Exception: "+e.getMessage());
 		}
 	}
 
 
 	@Override
 	public List<Group> getGroups() {
-		// TODO Auto-generated method stub
-		return null;
+		if (groupList == null) {
+			updateGroupList();
+		}
+		return groupList;
+	}
+	
+	private void updateGroupList() {
+		//get users groups 
+		groupList = groupDOA.findGroupbyUserId(user.getUserID());
+
+		// Get groups tasks
+		for (Group group : groupList) {
+			List<Task> groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
+			group.getTaskList().addAll(groupsTasks);
+		}
 	}
 
 
@@ -46,44 +61,46 @@ public class UserService implements UserServiceInterface{
 	public ServiceResponse saveGroup(Group group) {
 		if (group.getName().equals("")) {
 			return new ServiceResponse(false, "Cannot Save group with no name!!");
-		}
+		}else {
 
 		// Save the farmer, or update if they have id
-		if (group.getGroupID() == null ? groupDOA.save(group) : groupDOA.updateGroup(group)) {
-
-			/*
-			// Save any cows that the farmer may now have
-			for (Task task : group.getTaskList()) {
-				taskDAO.s
+			if (group.getGroupID() == null) {
+				group.setUserID(user.getUserID());
+				groupDOA.save(group); 
+				return new ServiceResponse(true, "Save successful");
+	
+			}else {	
+				assert(group.getUserID() != null);
+				groupDOA.updateGroup(group);
+				return new ServiceResponse(true, "Save successful");
 			}
-			*/
-
-			// Update the list that service provides
-			//updateFarmerList();
-
-			// Let everyone know that there is a new farmer
-			//setChanged();
-
-			//Map<String, Integer> changes = new HashMap<>();
-			//changes.put("new", farmers.size());
-
-			//notifyObservers(changes);
-
-			return new ServiceResponse(true, "Save successful");
+			
+	
+				/*
+				// Save any cows that the farmer may now have
+				for (Task task : group.getTaskList()) {
+					taskDAO.s
+				}
+				*/
+	
+				// Update the list that service provides
+				//updateFarmerList();
+	
+				// Let everyone know that there is a new farmer
+				//setChanged();
+	
+				//Map<String, Integer> changes = new HashMap<>();
+				//changes.put("new", farmers.size());
+	
+				//notifyObservers(changes);
+	
+				
 		}
-		return new ServiceResponse(false, "Save Failed");
 	}
 
 
 	@Override
 	public ServiceResponse deleteGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public ServiceResponse updateGroup(Group group) {
 		// TODO Auto-generated method stub
 		return null;
 	}

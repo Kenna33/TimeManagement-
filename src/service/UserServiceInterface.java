@@ -10,5 +10,5 @@ public interface UserServiceInterface {
 	public List<Group> getGroups();
 	public ServiceResponse saveGroup(Group group);
 	public ServiceResponse deleteGroup(Group group);
-	public ServiceResponse updateGroup(Group group);
+	//public ServiceResponse updateGroup(Group group);
 }

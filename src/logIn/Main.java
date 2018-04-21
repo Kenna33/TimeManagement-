@@ -2,9 +2,21 @@ package logIn;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+
 import javax.swing.*;
 
 import createAccount.CreateAccount;
+
+import data.Task;
+
+import model.GroupListModel;
+import model.ObservantTableModel;
+
+import model.SelectedTasksTableModel;
+
+import service.UserService;
+
 
  
 public class Main {
@@ -30,9 +42,15 @@ public class Main {
                         // if login successfully
                         if(loginDlg.isSucceeded()){
                         	//run display page 
-                            btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+                            //btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
                             
-                          //  HomePage home = new HomePage(); 
+                            UserService us = new UserService(checkLogin.getID());
+            				GroupListModel listModel = new GroupListModel(us);
+            				us.addObserver(listModel);
+            				ObservantTableModel<List<Task>> otm = new SelectedTasksTableModel();
+            				HomePage app = new HomePage(listModel, otm, us);
+            				app.addObserver(otm);
+            				app.setVisible(true);
                         }
                     }
                 });

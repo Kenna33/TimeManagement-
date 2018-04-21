@@ -57,7 +57,7 @@ public class LogInDialog extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-                if (Login.authenticate(getUsername(), getPassword())) {
+                if (checkLogin.authenticate(getUsername(), getPassword())) {
                     JOptionPane.showMessageDialog(LogInDialog.this,
                             "Hi " + getUsername() + "! You have successfully logged in.",
                             "Login",

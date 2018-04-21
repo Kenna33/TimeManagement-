@@ -2,6 +2,7 @@ package data;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,64 +13,42 @@ import Connection.ConnectionFactory;
 
 public class SQLTaskDOA implements TaskDOA{
 
-	public SQLTaskDOA() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	@Override
-	public List<Task> findTaskbyGroupId(Integer id) throws SQLException {
+	public List<Task> findTaskbyGroupId(Integer id){
 		List<Task> list = new ArrayList<Task>(); 
 		Task task = null; 
-		Connection dbConnection = null;
-		Statement statement = null;
-		
+	
 		try {
-			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
-			statement = dbConnection.createStatement();
-			String condition = "SELECT * FROM Tasks WHERE GROUPID = " + id; 
-			ResultSet rs = statement.executeQuery(condition);
+			Connection connection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM Tasks WHERE GROUPID = ?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
 			
-			if(rs.next()) {
-				task = new Task(); 
-				Integer Id = rs.getInt("TASKID");
-				String name = rs.getString("NAME"); 
-				Date duedate = rs.getDate("DUEDATE"); 
-				int priority = rs.getInt("PRIORITY"); 
-				int progress = rs.getInt("PROGRESS");
-				String description = rs.getString("DESCRIPTION"); 
-				Integer groupId = rs.getInt("GROUPID"); 
-				Integer userId = rs.getInt("USERID"); 
+			while(rs.next()) {
+				task = new Task();
 				
-				task.setTaskID(Id);
-				task.setName(name);
-				task.setDueDate(duedate); 
-				task.setPriority(priority);
-				task.setProgress(progress);
-				task.setDescription(description);
-				task.setGroupID(groupId);
-				task.setUserID(userId);
+				task.setTaskID(rs.getInt("TASKID"));
+				task.setName(rs.getString("NAME"));
+				task.setDueDate(rs.getDate("DUEDATE")); 
+				task.setPriority(rs.getInt("PRIORITY"));
+				task.setProgress(rs.getInt("PROGRESS"));
+				task.setDescription(rs.getString("DESCRIPTION"));
+				task.setGroupID(rs.getInt("GROUPID"));
+				task.setUserID(rs.getInt("USERID"));
 				
 				list.add(task); 
-				
-			}else {
-				System.out.println("No data found for input query");
-				throw new RuntimeException(); 
 			}
-			System.out.println("Record is found from Tasks table!");
 			
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			if (statement != null) {
-				statement.close();
-			}
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
+			e.printStackTrace();
 		}
-	
-		return list; 
+		
+		return list;
 	}
+	
+	
+	
 	
 
 	@Override

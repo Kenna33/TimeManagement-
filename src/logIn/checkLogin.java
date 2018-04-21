@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import data.SQLUserAccountDOA;
 import data.UserAccountDOA;
 
-public class Login {
+public class checkLogin {
 	
 	private static Integer ID; 
 

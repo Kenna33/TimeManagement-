@@ -14,9 +14,10 @@ import Connection.ConnectionFactory;
 public class SQLGroupDOA implements GroupDOA{
 
 	@Override
-	public List<Group> findGroupbyUserId(Integer id) throws SQLException {
+	public List<Group> findGroupbyUserId(Integer id){
 		List<Group> list = new ArrayList<Group>(); 
 		Group group = null; 
+		/*
 		Connection dbConnection = null;
 		Statement statement = null;
 		
@@ -55,6 +56,29 @@ public class SQLGroupDOA implements GroupDOA{
 			}
 		}
 		return list; 
+		*/
+	
+		try {
+			Connection connection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM Groups WHERE USERID = ?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				group = new Group();
+				
+				group.setName(rs.getString("NAME"));
+				group.setGroupID(rs.getInt("GROUPID"));
+				group.setUserID(rs.getInt("USERID"));
+				
+				list.add(group); 
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 	/*
@@ -92,7 +116,7 @@ public class SQLGroupDOA implements GroupDOA{
 	*/ 
 	
 	@Override
-	public boolean save(Group group) {
+	public void save(Group group) {
 		Connection sqlConnection;
 		try {
 			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
@@ -105,9 +129,7 @@ public class SQLGroupDOA implements GroupDOA{
 			// Should replace with log message
 			System.out.println("Could not save the group");
 			e.printStackTrace();
-			return false;
 		}
-		return true;
 	}
 
 	@Override
@@ -164,18 +186,16 @@ public class SQLGroupDOA implements GroupDOA{
 	}
 
 	@Override
-	public boolean updateGroup(Group group) {
+	public void updateGroup(Group group) {
 			try {
 				Connection connection = ConnectionFactory.getInstance().getDBConnection();
 				PreparedStatement ps = connection.prepareStatement("UPDATE Groups SET name = ? WHERE GroupID = ?");
 				ps.setString(1, group.getName());
 				ps.setInt(2, group.getGroupID());
 				ps.executeUpdate();
-				return true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			return false;
 	}
 		
 	

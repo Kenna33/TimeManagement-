@@ -1,3 +1,5 @@
+package logIn; 
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -167,8 +169,8 @@ public class HomePage extends Observable {
 		warningLabel.setForeground(Color.RED);
 		menuBar.add(warningLabel);
 		
-		JMenuItem editFarmerBtn = new JMenuItem("Edit Farmer");
-		editFarmerBtn.addActionListener(new ActionListener() {
+		JMenuItem editGroupBtn = new JMenuItem("Edit Group");
+		editGroupBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -178,12 +180,12 @@ public class HomePage extends Observable {
 					return;
 				}
 				AddGroupPopUp popUp = new AddGroupPopUp(usi, selectedGroup);
-				farmerList.clearSelection();
+				groupList.clearSelection();
 				popUp.setVisible(true);
 			}
 			
 		});
-		mnMenu.add(editFarmerBtn);
+		mnMenu.add(editGroupBtn);
 
 		JMenuItem removeGroupBtn = new JMenuItem("Remove Group");
 		removeGroupBtn.addActionListener(new ActionListener() {
@@ -206,18 +208,19 @@ public class HomePage extends Observable {
 		
 
 		final HomePage myHomePage = this;
-		farmerList.addMouseListener(new MouseAdapter() {
+		groupList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				JList list = (JList) evt.getSource();
-				selectedFarmer = (Farmer) list.getSelectedValue();
+				selectedGroup = (Group) list.getSelectedValue();
 
 				// The selected farmer has changed. Notify anyone who cares.
-				myWindow.setChanged();
-				myWindow.notifyObservers(selectedFarmer);
+				myHomePage.setChanged();
+				myHomePage.notifyObservers(selectedGroup);
 
 			}
 		});
 		
+		/*
 		JButton transferBtn = new JButton("Transfer Cow");
 		verticalBox_1.add(transferBtn);
 		transferBtn.addActionListener(new ActionListener() {
@@ -242,10 +245,12 @@ public class HomePage extends Observable {
 			}
 			
 		});
+		*/
 	}
 	
+	
 	public void setVisible(boolean visibility) {
-		frmFarmersHashcows.setVisible(visibility);
+		TimeManagementHome.setVisible(visibility);
 	}
 
 }

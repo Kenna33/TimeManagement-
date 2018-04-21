@@ -45,7 +45,7 @@ public class AddGroupPopUp extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddGroupPopUp frame = new AddGroupPopUp(new UserService(Login.getID()));
+					AddGroupPopUp frame = new AddGroupPopUp(new UserService(checkLogin.getID()));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
