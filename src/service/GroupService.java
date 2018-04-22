@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Observable;
 
 import data.Group;
+import data.SQLGroupDOA;
+import data.SQLTaskDOA;
+import data.SQLUserAccountDOA;
 import data.Task;
 import data.TaskDOA;
 
@@ -15,6 +18,7 @@ public class GroupService extends Observable implements GroupServiceInterface{
 	private TaskDOA taskDOA;
 
 	public GroupService(Group g) {
+		taskDOA = new SQLTaskDOA(); 
 		group = g;
 	}
 
