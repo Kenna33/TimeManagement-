@@ -33,5 +33,9 @@ public class Group {
 	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
+	@Override
+	public String toString() {
+		return "Group name=" + name + ", id=" + groupID + "]";
+	}
 
 }

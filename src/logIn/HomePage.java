@@ -38,6 +38,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
 
+
 import data.Group;
 import data.Task;
 import model.ObservantTableModel;
@@ -49,8 +50,8 @@ public class HomePage extends Observable {
 	private JFrame TimeManagementHome;
 	private JTable TasksTable;
 	private Group selectedGroup;
-	//private List<Task> clickedTasks;
-	private Task clickedTask;
+	private List<Task> clickedTasks;
+	//private Task clickedTask;
 
 	/**
 	 * Launch the application.
@@ -63,20 +64,20 @@ public class HomePage extends Observable {
 	 * Create the application.
 	 * @wbp.parser.entryPoint
 	 */
-	public HomePage(ListModel<Group> glm, ObservantTableModel<Task> st, UserServiceInterface usi) {
+	public HomePage(ListModel<Group> glm, ObservantTableModel<List<Task>> st, UserServiceInterface usi) {
 		initialize(glm, st, usi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ListModel<Group> glm, ObservantTableModel<Task> otm, final UserServiceInterface usi) {
+	private void initialize(ListModel<Group> glm, ObservantTableModel<List<Task>> otm, final UserServiceInterface usi) {
 
 		// Make a GroupListModel for the list
 		ListModel<Group> groupListModel = glm;
 
 		// Make a SelectedTaskTableModel
-		ObservantTableModel<Task> selectedTasks = otm;
+		ObservantTableModel<List<Task>> selectedTasks = otm;
 		
 		TimeManagementHome = new JFrame();
 		TimeManagementHome.setTitle("Time Management Planner");
@@ -131,15 +132,29 @@ public class HomePage extends Observable {
 				JTable table = (JTable) me.getSource();
 				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
 				int[] selected = table.getSelectedRows();
-				final Task SelectedTask = taskModel.getObservedValue();
-				clickedTask = SelectedTask;
-				/*
+				final List<Task> allSelectedTask = taskModel.getObservedValue();
+				clickedTasks = allSelectedTask;
+				
 				for(Integer taskIndex: selected) {
-					clickedTasks.add(allSelectedTasks.get(taskIndex));
+					clickedTasks.add(allSelectedTask.get(taskIndex));
 				}
-				*/
+			
 			}
 		});;
+		/*
+		@Override
+		public void mouseClicked(MouseEvent me) {
+			JTable table = (JTable) me.getSource();
+			ObservantTableModel<List<Cow>> cowModel = (ObservantTableModel<List<Cow>>)table.getModel();
+			int[] selected = table.getSelectedRows();
+			final List<Cow> allSelectedCows = cowModel.getObservedValue();
+			clickedCows = new ArrayList<Cow>();
+			for(Integer cowIndex: selected) {
+				clickedCows.add(allSelectedCows.get(cowIndex));
+			}
+		}
+	});;
+	*/
 		
 		
 		JScrollPane scrollPane = new JScrollPane(TasksTable);

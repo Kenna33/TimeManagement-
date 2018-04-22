@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import data.Group;
 import data.GroupDOA;
 import data.SQLGroupDOA;
+import data.SQLTaskDOA;
 import data.SQLUserAccountDOA;
 import data.Task;
 import data.TaskDOA;
@@ -28,6 +30,7 @@ public class UserService extends Observable implements UserServiceInterface{
 	public UserService(Integer id) {
 		userDOA = new SQLUserAccountDOA(); 
 		groupDOA = new SQLGroupDOA(); 
+		taskDOA = new SQLTaskDOA(); 
 		
 		try {
 			user = userDOA.findUserById(id);
@@ -50,12 +53,14 @@ public class UserService extends Observable implements UserServiceInterface{
 		groupList = groupDOA.findGroupbyUserId(user.getUserID());
 
 		// Get groups tasks
-		/*
 		for (Group group : groupList) {
 			List<Task> groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
+			if(group.getTaskList() == null) {
+				group.setTaskList(new ArrayList<Task>());
+			}
 			group.getTaskList().addAll(groupsTasks);
 		}
-		*/
+		
 	}
 
 
@@ -79,11 +84,12 @@ public class UserService extends Observable implements UserServiceInterface{
 			
 	
 				/*
-				// Save any cows that the farmer may now have
+				// Save any tasks that the group may now have
 				for (Task task : group.getTaskList()) {
-					taskDAO.s
+					taskDAO.save
 				}
 				*/
+				
 	
 				// Update the list that service provides
 				updateGroupList(); 
