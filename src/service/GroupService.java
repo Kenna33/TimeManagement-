@@ -38,6 +38,7 @@ public class GroupService extends Observable implements GroupServiceInterface{
 
 		// Save the task, or update if they have id
 			if (task.getTaskID() == null) {
+				task.setUserID(group.getUserID());
 				task.setGroupID(group.getGroupID());
 				taskDOA.save(task); 
 			}else {	
