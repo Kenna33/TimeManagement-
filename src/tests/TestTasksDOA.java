@@ -36,18 +36,20 @@ class TestTasksDOA {
 		task1.setUserID(1);
 		task1.setProgress(1);
 		task1.setDescription("This is my third task");
-		task1.setDueDate(new Date(0, 0, 0));
+		
+		Date myDate = new Date(0, 0, 0); 
+		task1.setDueDate(myDate);
 		task1.setGroupID(1);
 		task1.setPriority(1);
  
-		/*
+		
 		try {
-			
+			Admin.deleteTasksTable();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			fail("SQLExceptionThrown");
 		}	
-		*/
+		
 		
 		try {
 			Admin.createTasksTable();
@@ -56,19 +58,12 @@ class TestTasksDOA {
 			fail("SQLExceptionThrown");
 		}
 		
-		try {
-			gate.save(task1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail("SQLExceptionThrown");
-		}	
+		gate.save(task1);	
 		
 		
-		try {
-			list = gate.findTaskbyGroupId(1);
-		} catch (SQLException e) {
-			fail("Data with ID 1 not found"); 
-		}
+		
+		list = gate.findTaskbyGroupId(1);
+		
 		
 		//assert(list.contains(task1)); 
 	}
@@ -81,6 +76,7 @@ class TestTasksDOA {
 
 		assertThrows(RuntimeException.class, ()-> {gate.findTaskbyGroupId(1);}); 
 	}
+	
 	
 	
 }

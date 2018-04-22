@@ -65,7 +65,7 @@ public class UserService extends Observable implements UserServiceInterface{
 			return new ServiceResponse(false, "Cannot Save group with no name!!");
 		}
 
-		// Save the farmer, or update if they have id
+		// Save the group, or update if they have id
 			if (group.getGroupID() == null) {
 				group.setUserID(user.getUserID());
 				groupDOA.save(group); 

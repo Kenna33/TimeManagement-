@@ -54,11 +54,7 @@ class TestGroupsDOA {
 		gate.save(group1);	
 		
 		
-		try {
-			list = gate.findGroupbyUserId(1);
-		} catch (SQLException e) {
-			fail("Data with ID 1 not found"); 
-		}
+		list = gate.findGroupbyUserId(1);
 		 
 	}
 

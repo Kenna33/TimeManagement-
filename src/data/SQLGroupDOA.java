@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import Connection.ConnectionFactory;
+import service.UserService;
 
 public class SQLGroupDOA implements GroupDOA{
-
+	private final static Logger LOGGER = Logger.getLogger(SQLGroupDOA.class.getName());
 	@Override
 	public List<Group> findGroupbyUserId(Integer id){
 		List<Group> list = new ArrayList<Group>(); 
@@ -124,6 +126,7 @@ public class SQLGroupDOA implements GroupDOA{
 			statement.setString(1, group.getName());
 			statement.setLong(2, group.getUserID());
 			statement.executeUpdate();
+			
 
 		} catch (SQLException e) {
 			// Should replace with log message

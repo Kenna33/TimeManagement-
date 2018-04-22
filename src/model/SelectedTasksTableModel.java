@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import data.Task;
 
-public class SelectedTasksTableModel extends AbstractTableModel implements ObservantTableModel<List<Task>>{
+public class SelectedTasksTableModel extends AbstractTableModel implements ObservantTableModel<Task>{
 	
 	private static final String[] taskFields = {"Name", "Description", "Priority", "Progress", "Due Date"};
 	
@@ -44,7 +44,7 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	}
 
 	@Override
-	public List<Task> getObservedValue() {
+	public Task getObservedValue() {
 		// TODO Auto-generated method stub
 		return null;
 	}

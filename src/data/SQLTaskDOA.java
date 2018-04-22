@@ -52,7 +52,8 @@ public class SQLTaskDOA implements TaskDOA{
 	
 
 	@Override
-	public void save(Task task) throws SQLException {
+	public void save(Task task){
+		
 		String insertTaskSQL = null; 
 	
 		insertTaskSQL = "INSERT INTO Tasks" + "(NAME,DUEDATE,PRIORITY,PROGRESS,GROUPID,DESCRIPTION,USERID) " + "VALUES"
@@ -73,15 +74,32 @@ public class SQLTaskDOA implements TaskDOA{
 			System.out.println("Record is inserted into UserAccounts table!");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} finally {
-			if (statement != null) {
-				statement.close();
-			}
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-		}
+		} 
 		
+		/*
+		Connection sqlConnection;
+		try {
+			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement statement = sqlConnection.prepareStatement("INSERT INTO Tasks "
+					+ "(NAME,DUEDATE,PRIORITY,PROGRESS,GROUPID,DESCRIPTION,USERID)"
+					+ " VALUES (?,?,?,?,?,?,?)");
+			statement.setString(1, task.getName());
+			//statement.setDate(2, task.getDueDate());
+			statement.setDate(2, task.getDueDate());
+			statement.setInt(3, task.getPriority());
+			statement.setInt(4, task.getProgress());
+			statement.setLong(5, task.getGroupID());
+			statement.setString(2, task.getDescription());
+			statement.setLong(2, task.getUserID());
+
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// Should replace with log message
+			System.out.println("Could not save the task");
+			e.printStackTrace();
+		}
+		*/
 	}
 
 	@Override
@@ -162,5 +180,31 @@ public class SQLTaskDOA implements TaskDOA{
 			}
 		}
 	}
+
+
+
+
+
+	@Override
+	public void updateTask(Task task) {
+		try {
+			Connection connection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement ps = connection.prepareStatement("UPDATE Tasks SET Name = ? , DueDate = ? "
+					+ ", Description = ? , Priority = ? , Progress = ? WHERE GroupID = ?");
+			ps.setString(1, task.getName());
+			ps.setDate(2, task.getDueDate());
+			ps.setString(3, task.getDescription());
+			ps.setInt(4, task.getPriority());
+			ps.setInt(4, task.getProgress());
+			ps.setInt(5, task.getGroupID());
+
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 
 }

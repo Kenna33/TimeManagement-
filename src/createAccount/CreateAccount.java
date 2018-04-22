@@ -71,7 +71,7 @@ public class CreateAccount implements ActionListener {
         JLabel passwordLabel = new JLabel("Password:");
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
         username = new JTextField(15);
-        email = new JTextField(50); 
+        email = new JTextField(40); 
         phoneNum = new JTextField(10); 
         password = new JPasswordField(15);
         confirmPassword = new JPasswordField(15);

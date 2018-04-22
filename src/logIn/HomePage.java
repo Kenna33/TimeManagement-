@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
+import service.GroupService;
 import service.GroupServiceInterface;
 import service.ServiceResponse;
 import service.UserServiceInterface;
@@ -48,7 +49,8 @@ public class HomePage extends Observable {
 	private JFrame TimeManagementHome;
 	private JTable TasksTable;
 	private Group selectedGroup;
-	private List<Task> clickedTasks;
+	//private List<Task> clickedTasks;
+	private Task clickedTask;
 
 	/**
 	 * Launch the application.
@@ -61,20 +63,20 @@ public class HomePage extends Observable {
 	 * Create the application.
 	 * @wbp.parser.entryPoint
 	 */
-	public HomePage(ListModel<Group> glm, ObservantTableModel<List<Task>> st, UserServiceInterface usi) {
+	public HomePage(ListModel<Group> glm, ObservantTableModel<Task> st, UserServiceInterface usi) {
 		initialize(glm, st, usi);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ListModel<Group> glm, ObservantTableModel<List<Task>> otm, final UserServiceInterface usi) {
+	private void initialize(ListModel<Group> glm, ObservantTableModel<Task> otm, final UserServiceInterface usi) {
 
 		// Make a GroupListModel for the list
 		ListModel<Group> groupListModel = glm;
 
 		// Make a SelectedTaskTableModel
-		ObservantTableModel<List<Task>> selectedTasks = otm;
+		ObservantTableModel<Task> selectedTasks = otm;
 		
 		TimeManagementHome = new JFrame();
 		TimeManagementHome.setTitle("Time Management Planner");
@@ -119,6 +121,7 @@ public class HomePage extends Observable {
 		Box verticalBox_1 = Box.createVerticalBox();
 		splitPane_2.setRightComponent(verticalBox_1);
 		
+		
 		TasksTable = new JTable(selectedTasks);
 		TasksTable.setFillsViewportHeight(true);
 		TasksTable.addMouseListener(new MouseAdapter() {
@@ -126,15 +129,18 @@ public class HomePage extends Observable {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				JTable table = (JTable) me.getSource();
-				ObservantTableModel<List<Task>> taskModel = (ObservantTableModel<List<Task>>)table.getModel();
+				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
 				int[] selected = table.getSelectedRows();
-				final List<Task> allSelectedTasks = taskModel.getObservedValue();
-				clickedTasks = new ArrayList<Task>();
+				final Task SelectedTask = taskModel.getObservedValue();
+				clickedTask = SelectedTask;
+				/*
 				for(Integer taskIndex: selected) {
 					clickedTasks.add(allSelectedTasks.get(taskIndex));
 				}
+				*/
 			}
 		});;
+		
 		
 		JScrollPane scrollPane = new JScrollPane(TasksTable);
 		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -220,8 +226,62 @@ public class HomePage extends Observable {
 			}
 		});
 		
+		
+		JButton addTaskBtn = new JButton("Add Task");
+		verticalBox_1.add(addTaskBtn);
+		addTaskBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(selectedGroup == null) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("Select a Group first!!");
+					return;
+				}
+				myHomePage.setChanged();
+				myHomePage.notifyObservers(null);
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						AddTaskPopUp frame = new AddTaskPopUp(new GroupService(selectedGroup));
+						frame.setVisible(true);
+						//??
+						//clickedTask = new Task();
+						//frame.setVisible(true);
+					}
+				});
+			}
+			
+		});
+		
 		/*
-		JButton transferBtn = new JButton("Transfer Cow");
+		JButton transferBtn = new JButton("Edit Task");
+		verticalBox_1.add(transferBtn);
+		transferBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(clickedCows == null || clickedCows.size() == 0) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("You must pick cows to transfer first!!");
+					return;
+				}
+				myWindow.setChanged();
+				myWindow.notifyObservers(null);
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						TransferCowPopUp popup = new TransferCowPopUp(lm, fsi, clickedCows);
+						clickedCows = new ArrayList<>();
+						popup.setVisible(true);
+					}
+				});
+			}
+			
+		});
+		
+		
+		JButton transferBtn = new JButton("Delete Task");
 		verticalBox_1.add(transferBtn);
 		transferBtn.addActionListener(new ActionListener() {
 

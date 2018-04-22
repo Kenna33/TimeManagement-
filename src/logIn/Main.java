@@ -46,7 +46,7 @@ public class Main {
                             UserService us = new UserService(checkLogin.getID());
             				GroupListModel listModel = new GroupListModel(us);
             				us.addObserver(listModel);
-            				ObservantTableModel<List<Task>> otm = new SelectedTasksTableModel();
+            				ObservantTableModel<Task> otm = new SelectedTasksTableModel();
             				HomePage app = new HomePage(listModel, otm, us);
             				app.addObserver(otm);
             				app.setVisible(true);
