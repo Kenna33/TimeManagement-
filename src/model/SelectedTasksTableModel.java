@@ -37,7 +37,7 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 		}
 		if(changes.containsKey("remove")) {
 			fireIntervalRemoved(this, changes.get("remove"), changes.get("remove"));
-		}
+		
 		*/
 		
 	}
@@ -80,9 +80,11 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	}
 
 	@Override
-	public List<Task> getObservedValue() {
+	public Task getObservedValue(int index) {
 
-		return new ArrayList<Task>(selectedTasks);
+		return selectedTasks.get(index);
 	}
+
+	
 	
 }

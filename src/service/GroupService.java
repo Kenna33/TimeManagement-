@@ -77,7 +77,7 @@ public class GroupService extends Observable implements GroupServiceInterface{
 		}
 
 		// Find where the farmer was in the list
-		int positionRemoved = taskList.indexOf(task);
+		//int positionRemoved = taskList.indexOf(task);
 
 		// Update the list that service provides
 		updateTaskList();

@@ -50,7 +50,7 @@ public class HomePage extends Observable {
 	private JFrame TimeManagementHome;
 	private JTable TasksTable;
 	private Group selectedGroup;
-	private List<Task> clickedTasks;
+	private Task clickedTask;
 	//private Task clickedTask;
 
 	/**
@@ -132,6 +132,7 @@ public class HomePage extends Observable {
 		//final HomePage mySecondHomePage = this; 
 		
 		TasksTable = new JTable(selectedTasks);
+		TasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TasksTable.setFillsViewportHeight(true);
 
 		//final HomePage myHomePage2 = this; 
@@ -142,13 +143,16 @@ public class HomePage extends Observable {
 				JTable table = (JTable) me.getSource();
 			
 				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
-				int[] selected = table.getSelectedRows();
-				final List<Task> allSelectedTask = taskModel.getObservedValue();
-				clickedTasks = allSelectedTask;
+				int selected = table.getSelectedRow();
+				if(selected >= 0) {
+					clickedTask = taskModel.getObservedValue(selected);
+				}
 				
+				/*
 				for(Integer taskIndex: selected) {
 					clickedTasks.add(allSelectedTask.get(taskIndex));
 				}
+				*/
 			 //   myHomePage2.setChanged();
 			//	myHomePage2.notifyObservers(selectedTasks);
 				
@@ -287,7 +291,8 @@ public class HomePage extends Observable {
 					warningLabel.setText("Select a Group first!!");
 					return;
 				}
-				if(clickedTasks == null || clickedTasks.size() == 0) {
+				//if(clickedTask == null || clickedTasks.size() == 0) {
+				if(clickedTask == null) {
 					warningLabel.setForeground(Color.RED);
 					warningLabel.setText("You must pick a task to edit first!!");
 					return;
@@ -298,7 +303,8 @@ public class HomePage extends Observable {
 					@Override
 					public void run() {
 						AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup));
-						clickedTasks = new ArrayList<>();
+						//clickedTasks = new ArrayList<>();
+						clickedTask = new Task(); 
 						popup.setVisible(true);
 					}
 				});
@@ -318,13 +324,14 @@ public class HomePage extends Observable {
 					warningLabel.setText("Select a Group first!!");
 					return;
 				}
-				if(clickedTasks == null || clickedTasks.size() == 0) {
+				//if(clickedTasks == null || clickedTasks.size() == 0) {
+				if(clickedTask == null) {
 					warningLabel.setForeground(Color.RED);
 					warningLabel.setText("You must pick task to delete first!!");
 					return;
 				}
 				GroupServiceInterface gsi = new GroupService(selectedGroup);
-				ServiceResponse response = gsi.deleteTask(clickedTasks.get(0));
+				ServiceResponse response = gsi.deleteTask(clickedTask);
 				warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
 				warningLabel.setText(response.getMessage());
 			}
