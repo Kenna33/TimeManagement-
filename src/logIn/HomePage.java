@@ -133,6 +133,28 @@ public class HomePage extends Observable {
 		
 		TasksTable = new JTable(selectedTasks);
 		TasksTable.setFillsViewportHeight(true);
+
+		//final HomePage myHomePage2 = this; 
+		TasksTable.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+			
+				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
+				int[] selected = table.getSelectedRows();
+				final List<Task> allSelectedTask = taskModel.getObservedValue();
+				clickedTasks = allSelectedTask;
+				
+				for(Integer taskIndex: selected) {
+					clickedTasks.add(allSelectedTask.get(taskIndex));
+				}
+			 //   myHomePage2.setChanged();
+			//	myHomePage2.notifyObservers(selectedTasks);
+				
+			}
+		});;
+		
 	
 		
 		JScrollPane scrollPane = new JScrollPane(TasksTable);
@@ -243,7 +265,7 @@ public class HomePage extends Observable {
 						AddTaskPopUp frame = new AddTaskPopUp(new GroupService(selectedGroup));
 						frame.setVisible(true);
 						//??
-						clickedTasks = new ArrayList<Task>(); 
+						//clickedTasks = new ArrayList<Task>(); 
 						//frame.setVisible(true);
 					}
 				});
@@ -253,46 +275,30 @@ public class HomePage extends Observable {
 		
 		
 		
-		final HomePage myHomePage2 = this; 
-		TasksTable.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent me) {
-				JTable table = (JTable) me.getSource();
-			
-				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
-				int[] selected = table.getSelectedRows();
-				final List<Task> allSelectedTask = taskModel.getObservedValue();
-				clickedTasks = allSelectedTask;
-				
-				for(Integer taskIndex: selected) {
-					clickedTasks.add(allSelectedTask.get(taskIndex));
-				}
-			    myHomePage2.setChanged();
-				myHomePage2.notifyObservers(selectedTasks);
-				
-			}
-		});;
 		
-		/*
-		JButton transferBtn = new JButton("Edit Task");
-		verticalBox_1.add(transferBtn);
-		transferBtn.addActionListener(new ActionListener() {
+		JButton editTaskBtn = new JButton("Edit Task");
+		verticalBox_1.add(editTaskBtn);
+		editTaskBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(clickedCows == null || clickedCows.size() == 0) {
+				if(selectedGroup == null) {
 					warningLabel.setForeground(Color.RED);
-					warningLabel.setText("You must pick cows to transfer first!!");
+					warningLabel.setText("Select a Group first!!");
 					return;
 				}
-				myWindow.setChanged();
-				myWindow.notifyObservers(null);
+				if(clickedTasks == null || clickedTasks.size() == 0) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("You must pick a task to edit first!!");
+					return;
+				}
+				myHomePage.setChanged();
+				myHomePage.notifyObservers(null);
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						TransferCowPopUp popup = new TransferCowPopUp(lm, fsi, clickedCows);
-						clickedCows = new ArrayList<>();
+						AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup));
+						clickedTasks = new ArrayList<>();
 						popup.setVisible(true);
 					}
 				});
@@ -301,31 +307,30 @@ public class HomePage extends Observable {
 		});
 		
 		
-		JButton transferBtn = new JButton("Delete Task");
-		verticalBox_1.add(transferBtn);
-		transferBtn.addActionListener(new ActionListener() {
+		JButton deleteTaskBtn = new JButton("Delete Task");
+		verticalBox_1.add(deleteTaskBtn);
+		deleteTaskBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(clickedCows == null || clickedCows.size() == 0) {
+				if(selectedGroup == null) {
 					warningLabel.setForeground(Color.RED);
-					warningLabel.setText("You must pick cows to transfer first!!");
+					warningLabel.setText("Select a Group first!!");
 					return;
 				}
-				myWindow.setChanged();
-				myWindow.notifyObservers(null);
-				EventQueue.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						TransferCowPopUp popup = new TransferCowPopUp(lm, fsi, clickedCows);
-						clickedCows = new ArrayList<>();
-						popup.setVisible(true);
-					}
-				});
+				if(clickedTasks == null || clickedTasks.size() == 0) {
+					warningLabel.setForeground(Color.RED);
+					warningLabel.setText("You must pick task to delete first!!");
+					return;
+				}
+				GroupServiceInterface gsi = new GroupService(selectedGroup);
+				ServiceResponse response = gsi.deleteTask(clickedTasks.get(0));
+				warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
+				warningLabel.setText(response.getMessage());
 			}
 			
 		});
-		*/
+		
 		/*
 		final HomePage mySecondHomePage = this;
 		taskList.addMouseListener(new MouseAdapter() {

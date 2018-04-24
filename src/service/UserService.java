@@ -60,7 +60,6 @@ public class UserService extends Observable implements UserServiceInterface{
 			}
 			group.getTaskList().addAll(groupsTasks);
 		}
-		
 	}
 
 

@@ -196,7 +196,9 @@ public class AddTaskPopUp extends JFrame{
 				taskInQuestion.setName(name.getText());
 				taskInQuestion.setDescription(description.getText());
 				//taskInQuestion.setDueDate(new (Date(datePicker.getModel().getDay());
-				taskInQuestion.setDueDate(new Date((datePicker.getModel().getYear() - 1900),datePicker.getModel().getMonth(),datePicker.getModel().getDay()));
+				taskInQuestion.setDueDate(
+						new Date((datePicker.getModel().getYear() - 1900),
+								datePicker.getModel().getMonth(),datePicker.getModel().getDay()));
 				//taskInQuestion.setDueDate((Date) dateField.getValue());
 				taskInQuestion.setPriority(priorityList.getSelectedIndex()); 
 				taskInQuestion.setProgress(progressList.getSelectedIndex());

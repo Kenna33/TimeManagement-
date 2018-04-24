@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,37 +39,62 @@ public class GroupService extends Observable implements GroupServiceInterface{
 		}
 
 		// Save the task, or update if they have id
-			if (task.getTaskID() == null) {
-				task.setUserID(group.getUserID());
-				task.setGroupID(group.getGroupID());
-				taskDOA.save(task); 
-			}else {	
-				assert(group.getUserID() != null);
-				assert(group.getGroupID() != null); 
-				taskDOA.updateTask(task);
-			}
-			
+		if (task.getTaskID() == null) {
+			task.setUserID(group.getUserID());
+			task.setGroupID(group.getGroupID());
+			taskDOA.save(task); 
+		}else {	
+			assert(group.getUserID() != null);
+			assert(group.getGroupID() != null); 
+			taskDOA.updateTask(task);
+		}
 	
-				// Update the list that service provides
-				updateTaskList(); 
-	
-				// Let everyone know that there is a new group
-				setChanged();
-	
-				/*
-				Map<String, Integer> changes = new HashMap<>();
-				changes.put("new", taskList.size());
-				*/
-				group.getTaskList().add(task); 
-				notifyObservers(group);
-				
-				return new ServiceResponse(true, "Save successful");
+
+		// Update the list that service provides
+		updateTaskList(); 
+
+		// Let everyone know that there is a new group
+		setChanged();
+
+		/*
+		Map<String, Integer> changes = new HashMap<>();
+		changes.put("new", taskList.size());
+		*/
+		group.getTaskList().add(task); 
+		notifyObservers(group);
+		
+		return new ServiceResponse(true, "Save successful");
 	}
 
 	@Override
 	public ServiceResponse deleteTask(Task task) {
-		// TODO Auto-generated method stub
-		return null;
+		// Delete the farmer
+		try {
+			taskDOA.deleteTaskFromGroupID(group.getGroupID());
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Find where the farmer was in the list
+		int positionRemoved = taskList.indexOf(task);
+
+		// Update the list that service provides
+		updateTaskList();
+
+		// Let everyone know that there is a new farmer
+		setChanged();
+
+		/*
+		Map<String, Integer> changes = new HashMap<>();
+		changes.put("remove", positionRemoved);
+		*/
+		group.getTaskList().remove(task); 
+		notifyObservers(group);
+
+		// Return success message
+		return new ServiceResponse(true, "Deletion Successful");
+			
 	}
 
 	@Override
