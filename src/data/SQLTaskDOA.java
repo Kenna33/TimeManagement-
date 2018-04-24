@@ -190,14 +190,15 @@ public class SQLTaskDOA implements TaskDOA{
 		try {
 			Connection connection = ConnectionFactory.getInstance().getDBConnection();
 			PreparedStatement ps = connection.prepareStatement("UPDATE Tasks SET Name = ? , DueDate = ? "
-					+ ", Description = ? , Priority = ? , Progress = ? WHERE GroupID = ?");
+					+ ", Description = ? , Priority = ? , Progress = ? WHERE TaskID = ?");
 			ps.setString(1, task.getName());
 			ps.setDate(2, task.getDueDate());
 			ps.setString(3, task.getDescription());
 			ps.setInt(4, task.getPriority());
-			ps.setInt(4, task.getProgress());
-			ps.setInt(5, task.getGroupID());
+			ps.setInt(5, task.getProgress());
+			ps.setInt(6, task.getTaskID());
 
+			System.out.println("Record is updated into UserAccounts table!");
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

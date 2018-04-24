@@ -302,9 +302,11 @@ public class HomePage extends Observable {
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup));
+						AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup),clickedTask);
+						
 						//clickedTasks = new ArrayList<>();
-						clickedTask = new Task(); 
+						//clickedTask = new Task(); 
+						TasksTable.clearSelection();
 						popup.setVisible(true);
 					}
 				});

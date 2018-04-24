@@ -17,10 +17,11 @@ import data.TaskDOA;
 public class GroupService extends Observable implements GroupServiceInterface{
 	private Group group; 
 	List<Task> taskList; 
-	private TaskDOA taskDOA;
+	private TaskDOA taskDOA;  
 
 	public GroupService(Group g) {
 		taskDOA = new SQLTaskDOA(); 
+		
 		group = g;
 	}
 
@@ -34,6 +35,7 @@ public class GroupService extends Observable implements GroupServiceInterface{
 
 	@Override
 	public ServiceResponse savetask(Task task) {
+		boolean changed = false; 
 		if (task.getName().equals("")) {
 			return new ServiceResponse(false, "Cannot Save task with no name!!");
 		}
@@ -47,6 +49,7 @@ public class GroupService extends Observable implements GroupServiceInterface{
 			assert(group.getUserID() != null);
 			assert(group.getGroupID() != null); 
 			taskDOA.updateTask(task);
+			changed = true; 
 		}
 	
 
@@ -60,7 +63,18 @@ public class GroupService extends Observable implements GroupServiceInterface{
 		Map<String, Integer> changes = new HashMap<>();
 		changes.put("new", taskList.size());
 		*/
-		group.getTaskList().add(task); 
+		
+		/*
+		if(changed) {
+			group.setTaskList(taskList);
+		}else {
+			group.getTaskList().add(task); 
+		}
+		*/ 
+		List<Task> taskList; 
+		taskList = taskDOA.findTaskbyGroupId(group.getGroupID()); 
+		group.setTaskList(taskList);
+		
 		notifyObservers(group);
 		
 		return new ServiceResponse(true, "Save successful");
@@ -68,9 +82,9 @@ public class GroupService extends Observable implements GroupServiceInterface{
 
 	@Override
 	public ServiceResponse deleteTask(Task task) {
-		// Delete the farmer
+		// Delete the group
 		try {
-			taskDOA.deleteTaskFromGroupID(group.getGroupID());
+			taskDOA.deleteTaskFromTaskID(task.getTaskID());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -89,7 +103,12 @@ public class GroupService extends Observable implements GroupServiceInterface{
 		Map<String, Integer> changes = new HashMap<>();
 		changes.put("remove", positionRemoved);
 		*/
-		group.getTaskList().remove(task); 
+		//group.getTaskList().remove(task); 
+		
+		List<Task> taskList; 
+		taskList = taskDOA.findTaskbyGroupId(group.getGroupID()); 
+		group.setTaskList(taskList);
+		
 		notifyObservers(group);
 
 		// Return success message

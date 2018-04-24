@@ -24,7 +24,7 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	public void update(Observable o, Object arg) {
 		
 		if(arg != null) {
-			setSelectedTasks(((Group)arg).getTaskList());
+			setSelectedTasks(((Group)arg).getTaskList());	
 		}
 		else {
 			setSelectedTasks(new ArrayList<Task>());
