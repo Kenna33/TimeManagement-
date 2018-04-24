@@ -113,8 +113,8 @@ public class UserService extends Observable implements UserServiceInterface{
 		// Delete the farmer
 		try {
 			groupDOA.deleteGroupFromGroupID(group.getGroupID());
+			taskDOA.deleteTaskFromGroupID(group.getGroupID());
 			
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

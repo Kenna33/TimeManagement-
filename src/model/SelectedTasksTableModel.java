@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.event.TableModelListener;
@@ -17,21 +18,27 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	
 	private List<Task> selectedTasks = new ArrayList<Task>();
 
-	/*
-	public SelectedTasksTableModel(List<Task> selectedTasks) {
-		this.selectedTasks = selectedTasks;
-		this.fireTableDataChanged();
-	}
-	*/
+	
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		
 		if(arg != null) {
 			setSelectedTasks(((Group)arg).getTaskList());
 		}
 		else {
 			setSelectedTasks(new ArrayList<Task>());
 		}
+		
+		/*
+		Map<String, Integer> changes = (Map<String, Integer>) arg;
+		if(changes.containsKey("new")) {
+			this.fireTableDataChanged(this, changes.get("new"), changes.get("new"));
+		}
+		if(changes.containsKey("remove")) {
+			fireIntervalRemoved(this, changes.get("remove"), changes.get("remove"));
+		}
+		*/
 		
 	}
 

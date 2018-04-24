@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import Connection.Admin;
@@ -23,7 +24,7 @@ class TestTasksDOA {
 	Task task2 = null; 
 	List<Task> list = null; 
 	
-	@BeforeEach
+	@Disabled
 	void TestSave() {
 		
 		//CreateUserAccountsTable create_delete = new CreateUserAccountsTable(); 
@@ -71,10 +72,11 @@ class TestTasksDOA {
 	
 	@Test
 	void testDelete() throws SQLException{
+		gate = new SQLTaskDOA(); 
 		
-		gate.deleteTaskFromUserID(1);
+		gate.deleteTaskFromGroupID(501);
 
-		assertThrows(RuntimeException.class, ()-> {gate.findTaskbyGroupId(1);}); 
+		assertThrows(RuntimeException.class, ()-> {gate.findTaskbyGroupId(501);}); 
 	}
 	
 	

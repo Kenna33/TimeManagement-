@@ -104,6 +104,13 @@ public class HomePage extends Observable {
 		groupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		groupList.setBackground(new Color(255, 255, 255));
 		verticalBox.add(groupList.getName(), groupList);
+		
+		/*
+		JTable taskList = new JTable(selectedTasks);
+		taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		taskList.setBackground(new Color(255, 255, 255));
+		verticalBox.add(taskList.getName(), taskList);
+		*/
 
 		JSeparator separator = new JSeparator();
 		verticalBox.add(separator);
@@ -122,40 +129,11 @@ public class HomePage extends Observable {
 		Box verticalBox_1 = Box.createVerticalBox();
 		splitPane_2.setRightComponent(verticalBox_1);
 		
+		//final HomePage mySecondHomePage = this; 
 		
 		TasksTable = new JTable(selectedTasks);
 		TasksTable.setFillsViewportHeight(true);
-		TasksTable.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent me) {
-				JTable table = (JTable) me.getSource();
-				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
-				int[] selected = table.getSelectedRows();
-				final List<Task> allSelectedTask = taskModel.getObservedValue();
-				clickedTasks = allSelectedTask;
-				
-				for(Integer taskIndex: selected) {
-					clickedTasks.add(allSelectedTask.get(taskIndex));
-				}
-			
-			}
-		});;
-		/*
-		@Override
-		public void mouseClicked(MouseEvent me) {
-			JTable table = (JTable) me.getSource();
-			ObservantTableModel<List<Cow>> cowModel = (ObservantTableModel<List<Cow>>)table.getModel();
-			int[] selected = table.getSelectedRows();
-			final List<Cow> allSelectedCows = cowModel.getObservedValue();
-			clickedCows = new ArrayList<Cow>();
-			for(Integer cowIndex: selected) {
-				clickedCows.add(allSelectedCows.get(cowIndex));
-			}
-		}
-	});;
-	*/
-		
+	
 		
 		JScrollPane scrollPane = new JScrollPane(TasksTable);
 		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -232,11 +210,14 @@ public class HomePage extends Observable {
 		groupList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				JList list = (JList) evt.getSource();
+				
 				selectedGroup = (Group) list.getSelectedValue();
 
 				// The selected group has changed. Notify anyone who cares.
 				myHomePage.setChanged();
 				myHomePage.notifyObservers(selectedGroup);
+			//	setChanged();
+			//	notifyObservers(clickedTasks);
 
 			}
 		});
@@ -253,21 +234,45 @@ public class HomePage extends Observable {
 					warningLabel.setText("Select a Group first!!");
 					return;
 				}
-				myHomePage.setChanged();
-				myHomePage.notifyObservers(null);
+				//changed here 
+				setChanged();
+				notifyObservers(null);
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						AddTaskPopUp frame = new AddTaskPopUp(new GroupService(selectedGroup));
 						frame.setVisible(true);
 						//??
-						//clickedTask = new Task();
+						clickedTasks = new ArrayList<Task>(); 
 						//frame.setVisible(true);
 					}
 				});
 			}
 			
 		});
+		
+		
+		
+		final HomePage myHomePage2 = this; 
+		TasksTable.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+			
+				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
+				int[] selected = table.getSelectedRows();
+				final List<Task> allSelectedTask = taskModel.getObservedValue();
+				clickedTasks = allSelectedTask;
+				
+				for(Integer taskIndex: selected) {
+					clickedTasks.add(allSelectedTask.get(taskIndex));
+				}
+			    myHomePage2.setChanged();
+				myHomePage2.notifyObservers(selectedTasks);
+				
+			}
+		});;
 		
 		/*
 		JButton transferBtn = new JButton("Edit Task");
@@ -321,6 +326,21 @@ public class HomePage extends Observable {
 			
 		});
 		*/
+		/*
+		final HomePage mySecondHomePage = this;
+		taskList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				JTable table = (JTable) evt.getSource();
+				clickedTasks = (List<Task>) table.getSelectedRow();
+
+				// The selected group has changed. Notify anyone who cares.
+				myHomePage.setChanged();
+				myHomePage.notifyObservers(clickedTasks);
+			}
+		});
+		*/
+		
+		
 	}
 	
 	

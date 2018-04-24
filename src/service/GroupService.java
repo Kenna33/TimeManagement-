@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,12 @@ public class GroupService extends Observable implements GroupServiceInterface{
 				// Let everyone know that there is a new group
 				setChanged();
 	
+				/*
 				Map<String, Integer> changes = new HashMap<>();
 				changes.put("new", taskList.size());
-	
-				notifyObservers(changes);
+				*/
+				group.getTaskList().add(task); 
+				notifyObservers(group);
 				
 				return new ServiceResponse(true, "Save successful");
 	}
@@ -71,6 +74,11 @@ public class GroupService extends Observable implements GroupServiceInterface{
 	@Override
 	public void updateTaskList() {
 		 taskList = taskDOA.findTaskbyGroupId(group.getUserID());
+		 
+		 if(group.getTaskList() == null) {
+				group.setTaskList(new ArrayList<Task>());
+			}
+			group.getTaskList().addAll(taskList);
 	}
 
 	
