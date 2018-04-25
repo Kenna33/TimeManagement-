@@ -1,9 +1,19 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: ConnectionFactory
+*/
 package Connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*
+ * Creates single instance of itself: Singleton 
+ * Abstract Factory 
+ */
 public class ConnectionFactory {
 
 	private static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
@@ -13,13 +23,14 @@ public class ConnectionFactory {
 	
 	private static ConnectionFactory INSTANCE;
 	
+	//Singleton Method 
 	public static ConnectionFactory getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new ConnectionFactory();
 		}
 		return INSTANCE;
 	}
-	
+
 	public Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {

@@ -1,7 +1,22 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: Group
+*/
+
 package data;
 
 import java.util.List;
 
+/*
+ * Group data object used to representing attributes 
+ * inside database and multiplicity relationship with tasks 
+ * and a user
+ * 
+ * Each group can only belong to one user 
+ * Each group can have multiple tasks 
+ */
 public class Group {
 	
 	private String name; 

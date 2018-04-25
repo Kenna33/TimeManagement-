@@ -1,8 +1,6 @@
 package createAccount;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -21,9 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import data.SQLUserAccountDOA;
+import data.SQLUserAccountDAO;
 import data.UserAccount;
-import data.UserAccountDOA;
+import data.UserAccountDAO;
 
 public class CreateAccount implements ActionListener {
 
@@ -38,28 +35,9 @@ public class CreateAccount implements ActionListener {
 	JLabel          success; 
 	
 
-    /*
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager
-                            .getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                CreateAccount window = new CreateAccount();
-                window.go();
-            }
-        });
-    }
-    */
-
     public void go() {
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-       // panel.setBackground(Color.GRAY);
 
         frame = new JFrame("Create a new account");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,8 +62,8 @@ public class CreateAccount implements ActionListener {
         right.weightx = (int) 2;
         right.fill = GridBagConstraints.REMAINDER;
         right.gridwidth = GridBagConstraints.REMAINDER;
-        // actual GUI
 
+        //add everything to panel: Decorator Design 
         panel.add(userLabel, left);
         panel.add(username, right);
         panel.add(emailLabel, left);
@@ -99,16 +77,18 @@ public class CreateAccount implements ActionListener {
 
         JButton createAccount = new JButton("Create this account");
         frame.getContentPane().add(BorderLayout.SOUTH, createAccount);
+        
+        //actionLister: Command design pattern 
         createAccount.addActionListener(this);
-
+        
         warningLabel = new JLabel();
         frame.getContentPane().add(BorderLayout.NORTH, warningLabel);
-
         frame.setSize(700, 500);
         frame.setVisible(true);
         
     }
 
+    //actionLister implementation
     public void actionPerformed(ActionEvent event) {
         if (!(Arrays.equals(password.getPassword(),
                 confirmPassword.getPassword()))) {
@@ -136,16 +116,10 @@ public class CreateAccount implements ActionListener {
             }
             user.setPassword(passwrd);
            
-            UserAccountDOA userDOA = new SQLUserAccountDOA(); 
-            try {
-				userDOA.save(user);
-				JOptionPane.showMessageDialog(frame,
-	                    "Account Created!");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+            UserAccountDAO userDAO = new SQLUserAccountDAO(); 
+            userDAO.save(user);
+			JOptionPane.showMessageDialog(frame,
+			        "Account Created!");
             frame.dispose();
             
         } catch (IOException e) {

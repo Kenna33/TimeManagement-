@@ -1,7 +1,21 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: UserAccount
+ */
+
 package data;
 
 import java.util.List;
 
+/*
+ * User Account data object used to representing attributes 
+ * inside database and multiplicity relationship with groups
+ * 
+ * Each user can have multiple groups with multiple tasks within
+ * them 
+ */
 public class UserAccount{
 
 	private Integer UserID; 

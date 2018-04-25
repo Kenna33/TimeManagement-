@@ -1,18 +1,20 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Logger;
 
 import Connection.ConnectionFactory;
 
 
-public class SQLUserAccountDOA implements UserAccountDOA{
+public class SQLUserAccountDAO implements UserAccountDAO{
 
-	
-	public void save(UserAccount user) throws SQLException { 
+	public void save(UserAccount user){ 
+		/*
 		String insertTableSQL = null; 
 		if(user.getUserID() == null) {
 			insertTableSQL = "INSERT INTO UserAccounts" + "(USERNAME,EMAIL,PHONENUM,PASSWORD) " + "VALUES"
@@ -41,9 +43,29 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 				dbConnection.close();
 			}
 		}
+		*/
+		Connection sqlConnection;
+		try {
+			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement statement = sqlConnection.prepareStatement("INSERT INTO UserAccounts "
+					+ "(USERNAME,EMAIL,PHONENUM,PASSWORD) "
+					+ " VALUES (?,?,?,?)");
+			statement.setString(1, user.getUserName());
+			statement.setString(2, user.getEmail());
+			statement.setString(3, user.getPhoneNum());
+			statement.setString(4, user.getPassword());
+
+			statement.executeUpdate();
+			System.out.println("Record inserted into UserAccount table!");
+
+		} catch (SQLException e) {
+			System.out.println("Could not save the task");
+			e.printStackTrace();
+		}
 	}
 	
-	public void deleteUser(Integer thisID) throws SQLException {
+	public void deleteUser(Integer thisID){
+		/*
 		if(thisID != null) {
 			Connection dbConnection = null;
 			Statement statement = null;
@@ -66,8 +88,24 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 				}
 			}
 		}
+		*/
+		Connection sqlConnection;
+		if(thisID != null) {
+			try {
+				sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+				PreparedStatement statement = sqlConnection.prepareStatement("DELETE FROM UserAccounts WHERE UserID = ?");
+				statement.setLong(1, thisID);
+				statement.executeUpdate();
+				System.out.println("Record deleted from UserAccount table!");
+				
+			} catch (SQLException e) {
+				System.out.println("Could not delete user");
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	/*
 	public UserAccount findUser(String condition) throws SQLException {
 		UserAccount user = null; 
 		Connection dbConnection = null;
@@ -118,8 +156,10 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 		return null;
 	}
 
+*/
 	@Override
-	public UserAccount findUserById(Integer id) throws SQLException {
+	public UserAccount findUserById(Integer id){
+		/*
 		UserAccount user = null; 
 		Connection dbConnection = null;
 		Statement statement = null;
@@ -161,43 +201,64 @@ public class SQLUserAccountDOA implements UserAccountDOA{
 		}
 	
 		return user; 
+		*/
+		UserAccount user = null; 
+		Connection sqlConnection;
+
+		try {
+			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement statement = sqlConnection.prepareStatement
+					("SELECT * FROM USERACCOUNTS WHERE UserID = ?"); 
+		    statement.setInt(1, id);
+		    ResultSet rs = statement.executeQuery();
+			
+		    if(rs.next()) {
+				user = new UserAccount(); 
+				int Id = rs.getInt("USERID");
+				String UserName = rs.getString("USERNAME"); 
+				String email = rs.getString("EMAIL"); 
+				String phoneNum = rs.getString("PHONENUM"); 
+				String password = rs.getString("PASSWORD");
+				user.setUserID(Id);
+				user.setUserName(UserName);
+				user.setEmail(email);
+				user.setPhoneNum(phoneNum);
+				user.setPassword(password);	
+				System.out.println("Record is found from UserAccount table!");
+			}else {
+				System.out.println("User not found from UserAccount table");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return user;  
 	}
 
 	@Override
-	public Integer findUserBySignIn(String userName, String passwrd) throws SQLException {
-		UserAccount user = null; 
-		Connection dbConnection = null;
-		Statement statement = null;
+	public Integer findUserBySignIn(String userName, String passwrd){
 		Integer Id = null; 
-		
+		Connection sqlConnection;
+
 		try {
-			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
-			statement = dbConnection.createStatement();
-			String condition = "SELECT UserID FROM USERACCOUNTS WHERE UserName = '" + userName + "' AND Password = '"
-					+ passwrd + "'"; 
-			ResultSet rs = statement.executeQuery(condition);
-			System.out.println(condition);
+			sqlConnection = ConnectionFactory.getInstance().getDBConnection();
+			PreparedStatement statement = sqlConnection.prepareStatement
+					("SELECT UserID FROM USERACCOUNTS WHERE UserName = ? AND Password = ?"); 
+		    statement.setString(1, userName);
+		    statement.setString(2, passwrd);
+		    
+		    ResultSet rs = statement.executeQuery();
 			
 			if(rs.next()) {
 				Id = rs.getInt("USERID");
-				System.out.println("Record is found from EMPLOYEE table!");
-				
+				System.out.println("Record is found from UserAccount table!");
 			}else {
-				System.out.println("No data found for input query");
-			}
-			
-			
+				System.out.println("Record not found from UserAccount table!");
+			}	
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} finally {
-			if (statement != null) {
-				statement.close();
-			}
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
 		}
-	
+		
 		return Id; 
 	}
 }

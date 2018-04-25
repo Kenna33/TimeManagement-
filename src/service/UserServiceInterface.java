@@ -6,6 +6,7 @@ import data.Group;
 import data.Task;
 import data.UserAccount;
 
+//facade pattern 
 public interface UserServiceInterface {
 	public List<Group> getGroups();
 	public ServiceResponse saveGroup(Group group);

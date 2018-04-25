@@ -2,8 +2,8 @@ package logIn;
 
 import java.sql.SQLException;
 
-import data.SQLUserAccountDOA;
-import data.UserAccountDOA;
+import data.SQLUserAccountDAO;
+import data.UserAccountDAO;
 
 public class checkLogin {
 	
@@ -12,13 +12,8 @@ public class checkLogin {
 	public static boolean authenticate(String username, String password){
         // get from database and check 
 		Integer id = null; 
-		UserAccountDOA gate = new SQLUserAccountDOA(); 
-		try {
-			id = gate.findUserBySignIn(username, password);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		UserAccountDAO gate = new SQLUserAccountDAO(); 
+		id = gate.findUserBySignIn(username, password);
 		
         if (id == null) {
             return false;

@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: Admin
+*/
 package Connection;
 
 
@@ -5,19 +11,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+ * Admin methods static only to be called from 
+ * tests and back end management of database, 
+ * Not for user to know about
+ */
 public class Admin {
 	
-
-	/*
-	public static void main(String[] argv) {
-		try {
-			createUserAccountTable(); 
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	*/
-
 	public static void createUserAccountTable() throws SQLException {
 		Connection dbConnection = null;
 		Statement statement = null;
@@ -115,7 +115,6 @@ public class Admin {
 		Statement statement = null;
 		String createString ="DROP TABLE Tasks";
 		
-		
 		try {
 			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 
 			statement = dbConnection.createStatement();
@@ -167,7 +166,6 @@ public class Admin {
 		Connection dbConnection = null;
 		Statement statement = null;
 		String createString ="DROP TABLE Groups";
-		
 		
 		try {
 			dbConnection = ConnectionFactory.getInstance().getDBConnection(); 

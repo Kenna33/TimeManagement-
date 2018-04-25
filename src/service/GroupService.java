@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.Observable;
 
 import data.Group;
-import data.SQLGroupDOA;
-import data.SQLTaskDOA;
-import data.SQLUserAccountDOA;
+import data.SQLGroupDAO;
+import data.SQLTaskDAO;
+import data.SQLUserAccountDAO;
 import data.Task;
-import data.TaskDOA;
+import data.TaskDAO;
 
 public class GroupService extends Observable implements GroupServiceInterface{
 	private Group group; 
 	List<Task> taskList; 
-	private TaskDOA taskDOA;  
+	private TaskDAO taskDOA;  
 
 	public GroupService(Group g) {
-		taskDOA = new SQLTaskDOA(); 
+		taskDOA = new SQLTaskDAO(); 
 		
 		group = g;
 	}
@@ -82,13 +82,8 @@ public class GroupService extends Observable implements GroupServiceInterface{
 
 	@Override
 	public ServiceResponse deleteTask(Task task) {
-		// Delete the group
-		try {
-			taskDOA.deleteTaskFromTaskID(task.getTaskID());
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
+		taskDOA.deleteTaskFromTaskID(task.getTaskID());
 
 		// Find where the farmer was in the list
 		//int positionRemoved = taskList.indexOf(task);

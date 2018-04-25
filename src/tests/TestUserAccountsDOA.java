@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: TestUserAccountsDOA
+ */
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,32 +17,31 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import Connection.Admin;
-import data.SQLUserAccountDOA;
+import data.SQLUserAccountDAO;
 import data.UserAccount;
 
 
+/*
+ * This is a junit test class that tests each function
+ * of the SQLUserAccountDAO 
+ */
 class TestUserAccountsDOA {
-	SQLUserAccountDOA gate = null; 
+	SQLUserAccountDAO gate = null; 
 	UserAccount user = null; 
 	UserAccount user2 = null; 
-	List<UserAccount> list = null; 
 
 	
 	@BeforeEach
 	void TestSave() {
 		
-		//CreateUserAccountsTable create_delete = new CreateUserAccountsTable(); 
-		gate = new SQLUserAccountDOA(); 
+		gate = new SQLUserAccountDAO(); 
 		user = new UserAccount();  
 		user2 = new UserAccount();  
-		list = new ArrayList<UserAccount>(); 
 		
 		user.setUserName("Kenna33");
 		user.setPhoneNum("555-971-1155");
 		user.setEmail("McKenna_Woodrow@baylor.edu");
 		user.setPassword("Kenna123");
-		
-		list.add(user); 
  
 		try {
 			Admin.deleteUserAccountsTable();
@@ -52,37 +57,25 @@ class TestUserAccountsDOA {
 			fail("SQLExceptionThrown");
 		}
 		
-		try {
-			gate.save(user);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail("SQLExceptionThrown");
-		}	
+		gate.save(user);	
 		
-		
-		try {
-			user2 = gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 1");
-		} catch (SQLException e) {
-			fail("Data with ID 1 not found"); 
-		}
-		
+		user2 = gate.findUserById(1);
 		user.setUserID(1);
 		assert(user.equals(user2)); 
 	}
 
 	
 	@Test
-	void testDelete() throws SQLException{
-		
+	void testDeletewithID() throws SQLException{
+		UserAccount user; 
 		gate.deleteUser(1);
-
-		assertThrows(RuntimeException.class, ()-> {gate.findUser("SELECT * FROM USERACCOUNTS WHERE USERID = 1");}); 
+		user = gate.findUserById(1); 
+		assert(user == null); 
 	}
 	
 	@Test
 	void testFindwithPassword() throws SQLException {
 		Integer id;  
-		
 		id = gate.findUserBySignIn("Kenna33", "Kenna123"); 
 		assert(id == 1);
 	}
@@ -94,7 +87,6 @@ class TestUserAccountsDOA {
 		id = gate.findUserBySignIn("Kenna3", "Kenna13"); 
 		assert(id == null);
 	}
-		
 
 }
 

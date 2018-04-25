@@ -1,9 +1,24 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: Task
+*/
+
 package data;
 
 import java.sql.Date;
 
-public class Task {
 
+/*
+ * Task data object used to representing attributes 
+ * inside database and multiplicity relationship with groups 
+ * and a user
+ * 
+ * Each task can only belong to one group and therefore one user
+ * 
+ */
+public class Task {
 	
 	private Integer taskID; 
 	private String name; 
