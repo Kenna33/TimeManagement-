@@ -1,12 +1,10 @@
 package service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.logging.Logger;
 
 import data.Group;
 import data.GroupDAO;
@@ -19,7 +17,6 @@ import data.UserAccount;
 import data.UserAccountDAO;
 
 public class UserService extends Observable implements UserServiceInterface{
-	private final static Logger LOGGER = Logger.getLogger(UserService.class.getName());
 	UserAccount user; 
 	private List<Group> groupList;  
 	private UserAccountDAO userDOA; 
@@ -77,15 +74,6 @@ public class UserService extends Observable implements UserServiceInterface{
 			
 		}
 		
-
-		/*
-		// Save any tasks that the group may now have
-		for (Task task : group.getTaskList()) {
-			taskDAO.save
-		}
-		*/
-		
-
 		// Update the list that service provides
 		updateGroupList(); 
 
@@ -125,7 +113,6 @@ public class UserService extends Observable implements UserServiceInterface{
 		// Return success message
 		return new ServiceResponse(true, "Deletion Successful");
 			
-		//return new ServiceResponse(false, "Deletion Failed");
 	}
 
 }

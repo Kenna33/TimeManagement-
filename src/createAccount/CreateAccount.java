@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: CreateAccount
+*/
 package createAccount;
 
 import java.awt.BorderLayout;
@@ -22,6 +28,10 @@ import data.SQLUserAccountDAO;
 import data.UserAccount;
 import data.UserAccountDAO;
 
+/*
+ * Object that handles user interface and user 
+ * input of creating an account  
+ */
 public class CreateAccount implements ActionListener {
 
 	JFrame          frame;
@@ -88,7 +98,7 @@ public class CreateAccount implements ActionListener {
         
     }
 
-    //actionLister implementation
+    //actionLister implementation: Command
     public void actionPerformed(ActionEvent event) {
         if (!(Arrays.equals(password.getPassword(),
                 confirmPassword.getPassword()))) {

@@ -3,8 +3,6 @@ package service;
 import java.util.List;
 
 import data.Group;
-import data.Task;
-import data.UserAccount;
 
 //facade pattern 
 public interface UserServiceInterface {

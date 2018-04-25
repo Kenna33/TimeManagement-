@@ -6,8 +6,6 @@
  */
 package data;
 
-import java.sql.SQLException;
-import java.util.List;
 
 /*
  * Interface to show the methods of the UserAccount Database Access Object 
@@ -16,7 +14,6 @@ import java.util.List;
 public interface UserAccountDAO {
 	public UserAccount findUserById(Integer id);
 	public Integer findUserBySignIn(String userName, String password);
-	//public List<UserAccount> findUserbyGroupId(int id);
 	public void save(UserAccount user);
 	public void deleteUser(Integer id);
 	

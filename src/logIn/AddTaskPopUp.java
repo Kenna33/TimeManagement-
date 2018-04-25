@@ -3,17 +3,13 @@ package logIn;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,49 +18,26 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.text.DateFormatter;
-import javax.swing.text.DefaultFormatterFactory;
 
-import data.Group;
 import data.Task;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import service.GroupServiceInterface;
 import service.ServiceResponse;
-import service.UserService;
-import service.UserServiceInterface;
 
 public class AddTaskPopUp extends JFrame{
 
+	/**
+	 * default serialized number
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
 	
-	private JTextField name; 
-	private JTextField dueDate; 
-	private JTextField priority; 
-	private JTextField progress; 
+	private JTextField name;  
 	private JTextField description; 
 	
-	
-	
-
-	/**
-	 * Launch the application.
-	 */
-	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddTaskPopUp frame = new AddTaskPopUp(new GroupService(checkLogin.getID()));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	*/
 	
 	public AddTaskPopUp(final GroupServiceInterface gsi) {
 		this(gsi, null);
@@ -189,6 +162,7 @@ public class AddTaskPopUp extends JFrame{
 		contentPane.add(warningLabel, BorderLayout.NORTH);
 		saveBtn.addActionListener(new ActionListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				

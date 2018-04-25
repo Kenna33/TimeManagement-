@@ -1,6 +1,5 @@
 package logIn;
 
-import java.sql.SQLException;
 
 import data.SQLUserAccountDAO;
 import data.UserAccountDAO;

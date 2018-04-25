@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: AddGroupPopUp
+ */
+
 package logIn;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,35 +13,30 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import service.GroupServiceInterface;
 import service.ServiceResponse;
 import service.UserService;
 import service.UserServiceInterface;
 
 import javax.swing.JLabel;
 import javax.swing.Box;
-import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import data.Group;
 
-import javax.swing.border.EtchedBorder;
 
 public class AddGroupPopUp extends JFrame {
 
 	/**
-	 * 
+	 * Generated serialVersion
 	 */
+	private static final long serialVersionUID = -2905946060999378695L;
 	private JPanel contentPane;
 	private JTextField textField;
 
@@ -91,7 +93,6 @@ public class AddGroupPopUp extends JFrame {
 		panel.add(textField);
 		textField.setColumns(10);
 		textField.setText(groupInQuestion.getName());
-		//System.out.println((groupInQuestion.getName());
 		
 		Component verticalGlue = Box.createVerticalGlue();
 		verticalBox.add(verticalGlue);
@@ -102,6 +103,7 @@ public class AddGroupPopUp extends JFrame {
 		JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setHorizontalAlignment(SwingConstants.LEFT);
 		horizontalBox.add(cancelBtn);
+		//Command pattern
 		cancelBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -139,7 +141,6 @@ public class AddGroupPopUp extends JFrame {
 				
 				// something went wrong with saving
 				warningLabel.setText(response.getMessage());
-				
 			}
 			
 		});

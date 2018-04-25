@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Apr 24 22:53:40 CDT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0162-faef-756f-00000dd32f38 
+Wed Apr 25 00:01:57 CDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0162-fb2d-fa11-00000de74760 
 on database directory C:\Users\mcken\Desktop\Intro to Java\TimeManagment\connection1 with class loader sun.misc.Launcher$AppClassLoader@6d06d69c 
 Loaded from file:/C:/Users/mcken/.m2/repository/org/apache/derby/derby/10.14.1.0/derby-10.14.1.0.jar
 java.vendor=Oracle Corporation
