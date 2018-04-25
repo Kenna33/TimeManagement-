@@ -8,7 +8,6 @@ import java.util.Observable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-
 import data.Group;
 import data.Task;
 
@@ -17,7 +16,6 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	private static final String[] taskFields = {"Name", "Description", "Priority", "Progress", "Due Date"};
 	
 	private List<Task> selectedTasks = new ArrayList<Task>();
-
 	
 	
 	@Override
@@ -51,6 +49,11 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 	public int getRowCount() {
 		return selectedTasks.size();
 	}
+	
+	public String getColumnName(int column) {
+		return taskFields[column];
+		
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -62,10 +65,22 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
 			return selectedTasks.get(rowIndex).getDescription();
 		}
 		if(field == "Priority") {
-			return selectedTasks.get(rowIndex).getPriority();
+			if(selectedTasks.get(rowIndex).getPriority() == 0) {
+				return "High"; 
+			}else if(selectedTasks.get(rowIndex).getPriority() == 1){
+				return "Medium"; 
+			}else {
+				return "Low"; 
+			}
 		}
 		if(field == "Progress") {
-			return selectedTasks.get(rowIndex).getProgress();
+			if (selectedTasks.get(rowIndex).getProgress() == 0) {
+				return "Finished"; 
+			}else if(selectedTasks.get(rowIndex).getProgress() == 1) {
+				return "Started"; 
+			}else {
+				return "Not Started"; 
+			}
 		}
 		if(field == "Due Date") {
 			return selectedTasks.get(rowIndex).getDueDate();

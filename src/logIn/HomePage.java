@@ -131,6 +131,8 @@ public class HomePage extends Observable {
 		
 		//final HomePage mySecondHomePage = this; 
 		
+		
+		
 		TasksTable = new JTable(selectedTasks);
 		TasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TasksTable.setFillsViewportHeight(true);
@@ -140,6 +142,7 @@ public class HomePage extends Observable {
 			
 			@Override
 			public void mouseClicked(MouseEvent me) {
+				
 				JTable table = (JTable) me.getSource();
 			
 				ObservantTableModel<Task> taskModel = (ObservantTableModel<Task>)table.getModel();
@@ -190,9 +193,11 @@ public class HomePage extends Observable {
 		});
 		mnMenu.add(addGroupBtn);
 		
+		
 		final JLabel warningLabel = new JLabel("");
 		warningLabel.setForeground(Color.RED);
 		menuBar.add(warningLabel);
+		
 		
 		JMenuItem editGroupBtn = new JMenuItem("Edit Group");
 		editGroupBtn.addActionListener(new ActionListener() {
@@ -206,6 +211,7 @@ public class HomePage extends Observable {
 				}
 				AddGroupPopUp popUp = new AddGroupPopUp(usi, selectedGroup);
 				groupList.clearSelection();
+				selectedGroup = null; 
 				popUp.setVisible(true);
 			}
 			
@@ -224,6 +230,8 @@ public class HomePage extends Observable {
 				ServiceResponse response = usi.deleteGroup(selectedGroup);
 				warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
 				warningLabel.setText(response.getMessage());
+				groupList.clearSelection();
+				selectedGroup = null; 
 			}
 
 		});
@@ -235,6 +243,7 @@ public class HomePage extends Observable {
 		final HomePage myHomePage = this;
 		groupList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
+				warningLabel.setText("");
 				JList list = (JList) evt.getSource();
 				
 				selectedGroup = (Group) list.getSelectedValue();
@@ -268,7 +277,8 @@ public class HomePage extends Observable {
 					public void run() {
 						AddTaskPopUp frame = new AddTaskPopUp(new GroupService(selectedGroup));
 						frame.setVisible(true);
-						//??
+						//clickedTask = new Task(); 
+						
 						//clickedTasks = new ArrayList<Task>(); 
 						//frame.setVisible(true);
 					}
@@ -305,7 +315,7 @@ public class HomePage extends Observable {
 						AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup),clickedTask);
 						
 						//clickedTasks = new ArrayList<>();
-						//clickedTask = new Task(); 
+						clickedTask = null; 
 						TasksTable.clearSelection();
 						popup.setVisible(true);
 					}
@@ -336,6 +346,8 @@ public class HomePage extends Observable {
 				ServiceResponse response = gsi.deleteTask(clickedTask);
 				warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
 				warningLabel.setText(response.getMessage());
+				clickedTask = null; 
+				TasksTable.clearSelection();
 			}
 			
 		});

@@ -42,7 +42,6 @@ public class Main {
                         // if login successfully
                         if(loginDlg.isSucceeded()){
                         	//run display page 
-                            
                             UserService us = new UserService(checkLogin.getID());
             				GroupListModel listModel = new GroupListModel(us);
             				us.addObserver(listModel);
