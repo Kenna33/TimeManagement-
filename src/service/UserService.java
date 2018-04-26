@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: UserService
+ */
+
 package service;
 
 import java.sql.SQLException;

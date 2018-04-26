@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: ServiceResponse
+ */
+
 package service;
 
 public class ServiceResponse {

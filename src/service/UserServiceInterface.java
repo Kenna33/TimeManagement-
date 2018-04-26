@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: UserServiceInterface
+ */
+
 package service;
 
 import java.util.List;

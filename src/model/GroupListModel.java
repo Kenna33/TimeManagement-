@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: GroupListModel
+ */
 package model;
 
 import java.util.Map;

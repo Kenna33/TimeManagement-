@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: AddTaskPopUp
+ */
+
 package logIn;
 
 import java.awt.BorderLayout;
@@ -82,16 +89,6 @@ public class AddTaskPopUp extends JFrame {
         progressList.setSelectedIndex(2);
         //priorityList.addActionListener(this);
 		
-		/*
-		//we choose the wanted date pattern
-		DateFormatter dateFormatter=new DateFormatter(new SimpleDateFormat("yyyy-MM-dd"));
-		//the javadoc new DefaultFormatterFactory(defaultFormat, displayFormat, editFormat)
-		DefaultFormatterFactory dateFormatterFactory =new DefaultFormatterFactory(dateFormatter,
-		 new DateFormatter(),
-		 dateFormatter
-		 );
-		JFormattedTextField dateField = new JFormattedTextField(dateFormatterFactory,15);
-		*/
 
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
@@ -121,17 +118,13 @@ public class AddTaskPopUp extends JFrame {
         panel.add(progressList, right);
         panel.add(dateLabel, left);
         panel.add(datePicker, right);
-
-        //initialize with now
-
-
+       
         JSeparator separator = new JSeparator();
         panel.add(separator);
 
         name.setText(taskInQuestion.getName());
         description.setText(taskInQuestion.getDescription());
-        //dateField.setValue(taskInQuestion.getDueDate());
-
+       
         Component verticalGlue = Box.createVerticalGlue();
         verticalBox.add(verticalGlue);
 
@@ -169,11 +162,9 @@ public class AddTaskPopUp extends JFrame {
                 // update the name with the current text field value
                 taskInQuestion.setName(name.getText());
                 taskInQuestion.setDescription(description.getText());
-                //taskInQuestion.setDueDate(new (Date(datePicker.getModel().getDay());
                 taskInQuestion.setDueDate(
                         new Date((datePicker.getModel().getYear() - 1900),
                                 datePicker.getModel().getMonth(), datePicker.getModel().getDay()));
-                //taskInQuestion.setDueDate((Date) dateField.getValue());
                 taskInQuestion.setPriority(priorityList.getSelectedIndex());
                 taskInQuestion.setProgress(progressList.getSelectedIndex());
 
@@ -181,7 +172,6 @@ public class AddTaskPopUp extends JFrame {
                 ServiceResponse response = gsi.savetask(taskInQuestion);
 
                 if (response.isSuccess()) {
-                    // dispose of the window
                     window.dispose();
                 }
 

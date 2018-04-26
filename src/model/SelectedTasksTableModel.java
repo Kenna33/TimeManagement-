@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: SelectedTasksTableModel
+ */
 package model;
 
 import java.util.ArrayList;
@@ -26,16 +32,6 @@ public class SelectedTasksTableModel extends AbstractTableModel implements Obser
         } else {
             setSelectedTasks(new ArrayList<Task>());
         }
-		
-		/*
-		Map<String, Integer> changes = (Map<String, Integer>) arg;
-		if(changes.containsKey("new")) {
-			this.fireTableDataChanged(this, changes.get("new"), changes.get("new"));
-		}
-		if(changes.containsKey("remove")) {
-			fireIntervalRemoved(this, changes.get("remove"), changes.get("remove"));
-		
-		*/
 
     }
 

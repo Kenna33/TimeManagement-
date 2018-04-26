@@ -1,3 +1,9 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: HomePage
+ */
 package logIn;
 
 import java.awt.EventQueue;

@@ -1,3 +1,10 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner 
+ * File Title: Main
+ */
+
 package logIn;
 
 import java.awt.*;
@@ -17,13 +24,14 @@ import model.SelectedTasksTableModel;
 
 import service.UserService;
 
-
+//Windows runner- run program from here 
 public class Main {
     public static void main(String[] args) {
         final JFrame frame = new JFrame("Time Management Planner");
         final JButton btnLogin = new JButton("Click to login");
         final JButton btnCreateAccount = new JButton("Create Account");
 
+        //if click create account button
         btnCreateAccount.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -33,6 +41,7 @@ public class Main {
 
                 });
 
+        //if click login button
         btnLogin.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
