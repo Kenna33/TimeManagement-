@@ -6,8 +6,8 @@ import javax.swing.table.TableModel;
 
 import data.Task;
 
-public interface ObservantTableModel<E> extends Observer, TableModel{
+public interface ObservantTableModel<E> extends Observer, TableModel {
 
-	public Task getObservedValue(int index);
+    public Task getObservedValue(int index);
 }
 

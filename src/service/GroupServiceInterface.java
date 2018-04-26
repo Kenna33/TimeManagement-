@@ -7,9 +7,12 @@ import data.Task;
 
 //facade pattern 
 public interface GroupServiceInterface {
-	public List<Task> getTasks();
-	public ServiceResponse savetask(Task task);
-	public ServiceResponse deleteTask(Task task);
-	public void updateTaskList();
+    public List<Task> getTasks();
+
+    public ServiceResponse savetask(Task task);
+
+    public ServiceResponse deleteTask(Task task);
+
+    public void updateTaskList();
 
 }

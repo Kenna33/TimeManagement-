@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,103 +17,124 @@ import data.TaskDAO;
 import data.UserAccount;
 import data.UserAccountDAO;
 
-public class UserService extends Observable implements UserServiceInterface{
-	UserAccount user; 
-	private List<Group> groupList;  
-	private UserAccountDAO userDOA; 
-	private GroupDAO groupDOA; 
-	private TaskDAO taskDOA; 
-	
-
-	public UserService(Integer id) {
-		userDOA = new SQLUserAccountDAO(); 
-		groupDOA = new SQLGroupDAO(); 
-		taskDOA = new SQLTaskDAO(); 
-		
-		user = userDOA.findUserById(id);
-	}
+public class UserService extends Observable implements UserServiceInterface {
+    UserAccount user;
+    private List<Group> groupList;
+    private UserAccountDAO userDOA;
+    private GroupDAO groupDOA;
+    private TaskDAO taskDOA;
 
 
-	@Override
-	public List<Group> getGroups() {
-		if (groupList == null) {
-			updateGroupList();
-		}
-		return groupList;
-	}
-	
-	private void updateGroupList() {
-		//get users groups 
-		groupList = groupDOA.findGroupbyUserId(user.getUserID());
+    public UserService(Integer id){
+        userDOA = new SQLUserAccountDAO();
+        groupDOA = new SQLGroupDAO();
+        taskDOA = new SQLTaskDAO();
 
-		// Get groups tasks
-		for (Group group : groupList) {
-			List<Task> groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
-			if(group.getTaskList() == null) {
-				group.setTaskList(new ArrayList<Task>());
-			}
-			group.getTaskList().addAll(groupsTasks);
-		}
-	}
+        try {
+            user = userDOA.findUserById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public List<Group> getGroups() {
+        if (groupList == null) {
+            updateGroupList();
+        }
+        return groupList;
+    }
 
-	@Override
-	public ServiceResponse saveGroup(Group group) {
-		if (group.getName().equals("")) {
-			return new ServiceResponse(false, "Cannot Save group with no name!!");
-		}
+    private void updateGroupList() {
+        //get users groups
+        try {
+            groupList = groupDOA.findGroupbyUserId(user.getUserID());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		// Save the group, or update if they have id
-		if (group.getGroupID() == null) {
-			group.setUserID(user.getUserID());
-			groupDOA.save(group); 
-			
-
-		}else {	
-			assert(group.getUserID() != null);
-			groupDOA.updateGroup(group);
-			
-		}
-		
-		// Update the list that service provides
-		updateGroupList(); 
-
-		// Let everyone know that there is a new group
-		setChanged();
-
-		Map<String, Integer> changes = new HashMap<>();
-		changes.put("new", groupList.size());
-
-		notifyObservers(changes);
-		
-		return new ServiceResponse(true, "Save successful");
-	
-	}
+        // Get groups tasks
+        for (Group group : groupList) {
+            List<Task> groupsTasks = null;
+            try {
+                groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (group.getTaskList() == null) {
+                group.setTaskList(new ArrayList<Task>());
+            }
+            group.getTaskList().addAll(groupsTasks);
+        }
+    }
 
 
-	@Override
-	public ServiceResponse deleteGroup(Group group) {
+    public ServiceResponse saveGroup(Group group) {
+        if (group.getName().equals("")) {
+            return new ServiceResponse(false, "Cannot Save group with no name!!");
+        }
 
-		groupDOA.deleteGroupFromGroupID(group.getGroupID());
-		taskDOA.deleteTaskFromGroupID(group.getGroupID());
+        // Save the group, or update if they have id
+        if (group.getGroupID() == null) {
+            group.setUserID(user.getUserID());
+            try {
+                groupDOA.save(group);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-		// Find where the farmer was in the list
-		int positionRemoved = groupList.indexOf(group);
 
-		// Update the list that service provides
-		updateGroupList();
+        } else {
+            assert (group.getUserID() != null);
+            try {
+                groupDOA.updateGroup(group);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-		// Let everyone know that there is a new farmer
-		setChanged();
+        }
 
-		Map<String, Integer> changes = new HashMap<>();
-		changes.put("remove", positionRemoved);
+        // Update the list that service provides
+        updateGroupList();
 
-		notifyObservers(changes);
+        // Let everyone know that there is a new group
+        setChanged();
 
-		// Return success message
-		return new ServiceResponse(true, "Deletion Successful");
-			
-	}
+        Map<String, Integer> changes = new HashMap<>();
+        changes.put("new", groupList.size());
+
+        notifyObservers(changes);
+
+        return new ServiceResponse(true, "Save successful");
+
+    }
+
+
+    public ServiceResponse deleteGroup(Group group) {
+
+        try {
+            groupDOA.deleteGroupFromGroupID(group.getGroupID());
+            taskDOA.deleteTaskFromGroupID(group.getGroupID());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        // Find where the farmer was in the list
+        int positionRemoved = groupList.indexOf(group);
+
+        // Update the list that service provides
+        updateGroupList();
+
+        // Let everyone know that there is a new farmer
+        setChanged();
+
+        Map<String, Integer> changes = new HashMap<>();
+        changes.put("remove", positionRemoved);
+
+        notifyObservers(changes);
+
+        // Return success message
+        return new ServiceResponse(true, "Deletion Successful");
+    }
 
 }
