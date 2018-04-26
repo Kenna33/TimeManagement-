@@ -22,7 +22,7 @@ public class Task {
 
     private Integer taskID;
     private String name;
-    private Date dueDate;
+    private String dueDate;
     private int priority;
     private int progress;
     private String description;
@@ -45,14 +45,13 @@ public class Task {
         this.name = name;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public String getDueDate() {
+        return dueDate.toString();
     }
 
     public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+        this.dueDate = dueDate.toString();
     }
-
 
     public int getPriority() {
         return priority;

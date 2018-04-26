@@ -7,31 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import data.Group;
-import data.GroupDAO;
-import data.SQLGroupDAO;
-import data.SQLTaskDAO;
-import data.SQLUserAccountDAO;
-import data.Task;
-import data.TaskDAO;
-import data.UserAccount;
-import data.UserAccountDAO;
+import data.*;
 
 public class UserService extends Observable implements UserServiceInterface {
     UserAccount user;
     private List<Group> groupList;
-    private UserAccountDAO userDOA;
-    private GroupDAO groupDOA;
-    private TaskDAO taskDOA;
+    private FactoryDAO factoryDAO;
 
 
     public UserService(Integer id){
-        userDOA = new SQLUserAccountDAO();
-        groupDOA = new SQLGroupDAO();
-        taskDOA = new SQLTaskDAO();
+        factoryDAO = new FactoryDAO();
 
         try {
-            user = userDOA.findUserById(id);
+            user = factoryDAO.findUserById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +35,7 @@ public class UserService extends Observable implements UserServiceInterface {
     private void updateGroupList() {
         //get users groups
         try {
-            groupList = groupDOA.findGroupbyUserId(user.getUserID());
+            groupList = factoryDAO.findGroupbyUserId(user.getUserID());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,7 +44,7 @@ public class UserService extends Observable implements UserServiceInterface {
         for (Group group : groupList) {
             List<Task> groupsTasks = null;
             try {
-                groupsTasks = taskDOA.findTaskbyGroupId(group.getGroupID());
+                groupsTasks = factoryDAO.findTaskbyGroupId(group.getGroupID());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -77,7 +65,7 @@ public class UserService extends Observable implements UserServiceInterface {
         if (group.getGroupID() == null) {
             group.setUserID(user.getUserID());
             try {
-                groupDOA.save(group);
+                factoryDAO.save(group);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -86,7 +74,7 @@ public class UserService extends Observable implements UserServiceInterface {
         } else {
             assert (group.getUserID() != null);
             try {
-                groupDOA.updateGroup(group);
+                factoryDAO.update(group);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -112,8 +100,8 @@ public class UserService extends Observable implements UserServiceInterface {
     public ServiceResponse deleteGroup(Group group) {
 
         try {
-            groupDOA.deleteGroupFromGroupID(group.getGroupID());
-            taskDOA.deleteTaskFromGroupID(group.getGroupID());
+            factoryDAO.deleteGroupFromGroupID(group.getGroupID());
+            factoryDAO.deleteTaskFromGroupID(group.getGroupID());
         } catch (SQLException e) {
             e.printStackTrace();
         }

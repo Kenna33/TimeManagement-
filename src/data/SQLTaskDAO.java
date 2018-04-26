@@ -68,13 +68,14 @@ public class SQLTaskDAO implements TaskDAO {
             sqlConnection = ConnectionFactory.getInstance().getDBConnection();
             statement = sqlConnection.prepareStatement("INSERT INTO Tasks "
                     + "(NAME,DUEDATE,PRIORITY,PROGRESS,GROUPID,DESCRIPTION,USERID)"
-                    + " VALUES (?,DATE('" + task.getDueDate() + "'),?,?,?,?,?)");
+                    + " VALUES (?,?,?,?,?,?,?)");
             statement.setString(1, task.getName());
-            statement.setInt(2, task.getPriority());
-            statement.setInt(3, task.getProgress());
-            statement.setLong(4, task.getGroupID());
-            statement.setString(5, task.getDescription());
-            statement.setLong(6, task.getUserID());
+            statement.setString(2,task.getDueDate());
+            statement.setInt(3, task.getPriority());
+            statement.setInt(4, task.getProgress());
+            statement.setLong(5, task.getGroupID());
+            statement.setString(6, task.getDescription());
+            statement.setLong(7, task.getUserID());
 
             statement.executeUpdate();
             System.out.println("Record inserted into Task table!");
@@ -161,7 +162,7 @@ public class SQLTaskDAO implements TaskDAO {
             ps = connection.prepareStatement("UPDATE Tasks SET Name = ? , DueDate = ? "
                     + ", Description = ? , Priority = ? , Progress = ? WHERE TaskID = ?");
             ps.setString(1, task.getName());
-            ps.setDate(2, task.getDueDate());
+            ps.setString(2, task.getDueDate());
             ps.setString(3, task.getDescription());
             ps.setInt(4, task.getPriority());
             ps.setInt(5, task.getProgress());

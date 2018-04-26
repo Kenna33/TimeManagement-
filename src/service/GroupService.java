@@ -2,26 +2,18 @@ package service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 
-import data.Group;
-import data.SQLGroupDAO;
-import data.SQLTaskDAO;
-import data.SQLUserAccountDAO;
-import data.Task;
-import data.TaskDAO;
+import data.*;
 
 public class GroupService extends Observable implements GroupServiceInterface {
     private Group group;
     List<Task> taskList;
-    private TaskDAO taskDOA;
+    private FactoryDAO factoryDAO;
 
     public GroupService(Group g) {
-        taskDOA = new SQLTaskDAO();
-
+        factoryDAO = new FactoryDAO();
         group = g;
     }
 
@@ -45,7 +37,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
             task.setUserID(group.getUserID());
             task.setGroupID(group.getGroupID());
             try {
-                taskDOA.save(task);
+                factoryDAO.save(task);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -53,7 +45,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
             assert (group.getUserID() != null);
             assert (group.getGroupID() != null);
             try {
-                taskDOA.updateTask(task);
+                factoryDAO.update(task);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -81,7 +73,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
 		*/
         List<Task> taskList;
         try {
-            taskList = taskDOA.findTaskbyGroupId(group.getGroupID());
+            taskList = factoryDAO.findTaskbyGroupId(group.getGroupID());
             group.setTaskList(taskList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +88,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
     public ServiceResponse deleteTask(Task task) {
 
         try {
-            taskDOA.deleteTaskFromTaskID(task.getTaskID());
+            factoryDAO.deleteTaskFromTaskID(task.getTaskID());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,7 +110,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
 
         List<Task> taskList;
         try {
-            taskList = taskDOA.findTaskbyGroupId(group.getGroupID());
+            taskList = factoryDAO.findTaskbyGroupId(group.getGroupID());
             group.setTaskList(taskList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,7 +127,7 @@ public class GroupService extends Observable implements GroupServiceInterface {
     @Override
     public void updateTaskList() {
         try {
-            taskList = taskDOA.findTaskbyGroupId(group.getUserID());
+            taskList = factoryDAO.findTaskbyGroupId(group.getUserID());
         } catch (SQLException e) {
             e.printStackTrace();
         }
