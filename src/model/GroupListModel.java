@@ -13,10 +13,12 @@ import java.util.Observer;
 import javax.swing.AbstractListModel;
 
 import data.Group;
-import service.GroupServiceInterface;
 import service.UserServiceInterface;
 
-
+/*
+ * This class sets the framework for displaying and updating the different
+ * groups, which is implemented in the HomePage 
+ */
 public class GroupListModel extends AbstractListModel<Group> implements Observer {
 
     /**
@@ -42,7 +44,8 @@ public class GroupListModel extends AbstractListModel<Group> implements Observer
 
     @Override
     public void update(Observable o, Object arg) {
-        Map<String, Integer> changes = (Map<String, Integer>) arg;
+        @SuppressWarnings("unchecked")
+		Map<String, Integer> changes = (Map<String, Integer>) arg;
         if (changes.containsKey("new")) {
             fireIntervalAdded(this, changes.get("new"), changes.get("new"));
         }

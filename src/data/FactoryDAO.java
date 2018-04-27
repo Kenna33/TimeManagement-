@@ -1,8 +1,18 @@
+/*
+ * @author  McKenna Woodrow
+ * @version 1
+ * Project Title: Time Management Planner
+ * File Title: FactoryDAO
+ */
 package data;
 
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+ * Object implements the factory method and encapsulates 
+ * all methods of the GroupDAO, TaskDAO, and UserDAO
+ */
 public class FactoryDAO {
     private GroupDAO groupDAO;
     private TaskDAO taskDAO;

@@ -11,9 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Observable;
 
@@ -51,14 +48,17 @@ import model.ObservantTableModel;
 
 import javax.swing.JButton;
 
+/*
+ * This class has the responsibility of creating the home page user interface 
+ * and delegating the users interactions to the UserService
+ */
 public class HomePage extends Observable {
 
     private JFrame TimeManagementHome;
     private JTable TasksTable;
     private Group selectedGroup;
     private Task clickedTask;
-    //private Task clickedTask;
-
+   
     /**
      * Launch the application.
      */
@@ -112,13 +112,6 @@ public class HomePage extends Observable {
         groupList.setBackground(new Color(255, 255, 255));
         verticalBox.add(groupList.getName(), groupList);
 		
-		/*
-		JTable taskList = new JTable(selectedTasks);
-		taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		taskList.setBackground(new Color(255, 255, 255));
-		verticalBox.add(taskList.getName(), taskList);
-		*/
-
         JSeparator separator = new JSeparator();
         verticalBox.add(separator);
 
@@ -136,14 +129,12 @@ public class HomePage extends Observable {
         Box verticalBox_1 = Box.createVerticalBox();
         splitPane_2.setRightComponent(verticalBox_1);
 
-        //final HomePage mySecondHomePage = this;
-
 
         TasksTable = new JTable(selectedTasks);
         TasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         TasksTable.setFillsViewportHeight(true);
 
-        //final HomePage myHomePage2 = this;
+        //update what task is currently selected
         TasksTable.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -157,14 +148,7 @@ public class HomePage extends Observable {
                     clickedTask = taskModel.getObservedValue(selected);
                 }
 				
-				/*
-				for(Integer taskIndex: selected) {
-					clickedTasks.add(allSelectedTask.get(taskIndex));
-				}
-				*/
-                //   myHomePage2.setChanged();
-                //	myHomePage2.notifyObservers(selectedTasks);
-
+				
             }
         });
         ;
@@ -184,6 +168,7 @@ public class HomePage extends Observable {
         JMenu mnMenu = new JMenu("Menu");
         menuBar.add(mnMenu);
 
+        //if button Add Group in the menu gets clicked 
         JMenuItem addGroupBtn = new JMenuItem("Add Group");
         addGroupBtn.addActionListener(new ActionListener() {
             @Override
@@ -205,6 +190,7 @@ public class HomePage extends Observable {
         menuBar.add(warningLabel);
 
 
+        //if button 'Edit Group' gets clicked in menu 
         JMenuItem editGroupBtn = new JMenuItem("Edit Group");
         editGroupBtn.addActionListener(new ActionListener() {
 
@@ -216,6 +202,7 @@ public class HomePage extends Observable {
                     return;
                 }
                 AddGroupPopUp popUp = new AddGroupPopUp(usi, selectedGroup);
+                //reset selected group
                 groupList.clearSelection();
                 selectedGroup = null;
                 popUp.setVisible(true);
@@ -224,6 +211,7 @@ public class HomePage extends Observable {
         });
         mnMenu.add(editGroupBtn);
 
+        //if button 'Remove Group' gets clicked in menu
         JMenuItem removeGroupBtn = new JMenuItem("Remove Group");
         removeGroupBtn.addActionListener(new ActionListener() {
             @Override
@@ -236,6 +224,7 @@ public class HomePage extends Observable {
                 ServiceResponse response = usi.deleteGroup(selectedGroup);
                 warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
                 warningLabel.setText(response.getMessage());
+                //reset selected group
                 groupList.clearSelection();
                 selectedGroup = null;
             }
@@ -244,6 +233,7 @@ public class HomePage extends Observable {
         mnMenu.add(removeGroupBtn);
 
 
+        //update what group is currently being selected
         final HomePage myHomePage = this;
         groupList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -255,13 +245,12 @@ public class HomePage extends Observable {
                 // The selected group has changed. Notify anyone who cares.
                 myHomePage.setChanged();
                 myHomePage.notifyObservers(selectedGroup);
-                //	setChanged();
-                //	notifyObservers(clickedTasks);
+                
 
             }
         });
 
-
+        //if button add task is clicked 
         JButton addTaskBtn = new JButton("Add Task");
         verticalBox_1.add(addTaskBtn);
         addTaskBtn.addActionListener(new ActionListener() {
@@ -273,7 +262,7 @@ public class HomePage extends Observable {
                     warningLabel.setText("Select a Group first!!");
                     return;
                 }
-                //changed here
+                
                 setChanged();
                 notifyObservers(null);
                 EventQueue.invokeLater(new Runnable() {
@@ -281,17 +270,14 @@ public class HomePage extends Observable {
                     public void run() {
                         AddTaskPopUp frame = new AddTaskPopUp(new GroupService(selectedGroup));
                         frame.setVisible(true);
-                        //clickedTask = new Task();
-
-                        //clickedTasks = new ArrayList<Task>();
-                        //frame.setVisible(true);
+                        
                     }
                 });
             }
 
         });
 
-
+        //if button edit task is clicked 
         JButton editTaskBtn = new JButton("Edit Task");
         verticalBox_1.add(editTaskBtn);
         editTaskBtn.addActionListener(new ActionListener() {
@@ -303,7 +289,7 @@ public class HomePage extends Observable {
                     warningLabel.setText("Select a Group first!!");
                     return;
                 }
-                //if(clickedTask == null || clickedTasks.size() == 0) {
+               
                 if (clickedTask == null) {
                     warningLabel.setForeground(Color.RED);
                     warningLabel.setText("You must pick a task to edit first!!");
@@ -316,7 +302,7 @@ public class HomePage extends Observable {
                     public void run() {
                         AddTaskPopUp popup = new AddTaskPopUp(new GroupService(selectedGroup), clickedTask);
 
-                        //clickedTasks = new ArrayList<>();
+                        //reset clicked task 
                         clickedTask = null;
                         TasksTable.clearSelection();
                         popup.setVisible(true);
@@ -326,7 +312,7 @@ public class HomePage extends Observable {
 
         });
 
-
+        //if button delete task is selected
         JButton deleteTaskBtn = new JButton("Delete Task");
         verticalBox_1.add(deleteTaskBtn);
         deleteTaskBtn.addActionListener(new ActionListener() {
@@ -338,7 +324,7 @@ public class HomePage extends Observable {
                     warningLabel.setText("Select a Group first!!");
                     return;
                 }
-                //if(clickedTasks == null || clickedTasks.size() == 0) {
+                
                 if (clickedTask == null) {
                     warningLabel.setForeground(Color.RED);
                     warningLabel.setText("You must pick task to delete first!!");
@@ -348,25 +334,13 @@ public class HomePage extends Observable {
                 ServiceResponse response = gsi.deleteTask(clickedTask);
                 warningLabel.setForeground(response.isSuccess() ? Color.GRAY : Color.RED);
                 warningLabel.setText(response.getMessage());
+                //reset selected task 
                 clickedTask = null;
                 TasksTable.clearSelection();
             }
 
         });
 		
-		/*
-		final HomePage mySecondHomePage = this;
-		taskList.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
-				JTable table = (JTable) evt.getSource();
-				clickedTasks = (List<Task>) table.getSelectedRow();
-
-				// The selected group has changed. Notify anyone who cares.
-				myHomePage.setChanged();
-				myHomePage.notifyObservers(clickedTasks);
-			}
-		});
-		*/
 
 
     }

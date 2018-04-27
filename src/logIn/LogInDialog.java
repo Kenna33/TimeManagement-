@@ -12,10 +12,18 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-
+/*
+ * This class has the responsibility of creating the login pop up user 
+ * interface and checking the log in through the CheckLogIn class and 
+ * setting a state of success to true or false for the Main to check 
+ */
 public class LogInDialog extends JDialog {
 
-    private JTextField tfUsername;
+    /**
+	 * default serial number
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField tfUsername;
     private JPasswordField pfPassword;
     private JLabel lbUsername;
     private JLabel lbPassword;

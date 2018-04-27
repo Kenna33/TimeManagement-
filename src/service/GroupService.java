@@ -13,6 +13,10 @@ import java.util.Observable;
 
 import data.*;
 
+/*
+ * This class is responsible for using the FactoryDAO to carry out the actions
+ * called by the user and return a response to whether it was successful or not
+ */
 public class GroupService extends Observable implements GroupServiceInterface {
     private Group group;
     List<Task> taskList;
@@ -33,7 +37,6 @@ public class GroupService extends Observable implements GroupServiceInterface {
 
     @Override
     public ServiceResponse savetask(Task task) {
-        boolean changed = false;
         if (task.getName().equals("")) {
             return new ServiceResponse(false, "Cannot Save task with no name!!");
         }
@@ -55,7 +58,6 @@ public class GroupService extends Observable implements GroupServiceInterface {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            changed = true;
         }
 
 

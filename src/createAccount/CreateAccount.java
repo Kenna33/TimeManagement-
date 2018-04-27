@@ -118,12 +118,7 @@ public class CreateAccount implements ActionListener {
                 buf.append(Character.toString(a));
             }
             String passwrd = buf.toString();
-            /*
-            String passwrd = "";
-            for (char a : password.getPassword()) {
-                passwrd += Character.toString(a);
-            }
-            */
+            
             user.setPassword(passwrd);
 
             UserAccountDAO userDAO = new SQLUserAccountDAO();

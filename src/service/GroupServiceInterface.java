@@ -9,7 +9,6 @@ package service;
 
 import java.util.List;
 
-import data.Group;
 import data.Task;
 
 //facade pattern 

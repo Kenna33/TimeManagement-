@@ -8,10 +8,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import data.Group;
@@ -19,7 +17,12 @@ import data.Task;
 
 public class SelectedTasksTableModel extends AbstractTableModel implements ObservantTableModel<List<Task>> {
 
-    private static final String[] taskFields = {"Name", "Description", "Priority", "Progress", "Due Date"};
+    /**
+	 * defaul serial number
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final String[] taskFields = {"Name", "Description", "Priority", "Progress", "Due Date"};
 
     private List<Task> selectedTasks = new ArrayList<Task>();
 

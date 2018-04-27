@@ -33,6 +33,13 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import service.GroupServiceInterface;
 import service.ServiceResponse;
 
+/*
+ * This class has the responsibility of the user interface 
+ * pop up, listening for user input, then delegating the 
+ * responsibilities of creating a task to the GroupService class
+ * Implement prototype design by creating instance of GroupService 
+ * in constructor
+ */
 public class AddTaskPopUp extends JFrame {
 
     /**
@@ -82,19 +89,15 @@ public class AddTaskPopUp extends JFrame {
         String[] priorityStrings = {"High", "Medium", "Low"};
         JComboBox priorityList = new JComboBox(priorityStrings);
         priorityList.setSelectedIndex(2);
-        //priorityList.addActionListener(this);
 
         String[] progressStrings = {"Finished", "Started", "Not Started"};
         JComboBox progressList = new JComboBox(progressStrings);
         progressList.setSelectedIndex(2);
-        //priorityList.addActionListener(this);
 		
 
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-
-        //add(datePicker);
 
         name = new JTextField(15);
         description = new JTextField(40);

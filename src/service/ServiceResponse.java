@@ -7,6 +7,10 @@
 
 package service;
 
+/*
+ * Class that is responsible for holding the state of the message to 
+ * return to the user 
+ */
 public class ServiceResponse {
 
     private boolean success;

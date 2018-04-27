@@ -7,11 +7,15 @@
 package logIn;
 
 
-import data.SQLUserAccountDAO;
-import data.UserAccountDAO;
+import data.FactoryDAO;
 
 import java.sql.SQLException;
 
+/*
+ * This class has on method authenticate which checks to 
+ * see if the given username and email is in the database 
+ * through the DAOFactory
+ */
 public class CheckLogin {
 
     private static Integer ID;
@@ -19,7 +23,7 @@ public class CheckLogin {
     public static boolean authenticate(String username, String password) {
         // get from database and check 
         Integer id = null;
-        UserAccountDAO gate = new SQLUserAccountDAO();
+        FactoryDAO gate = new FactoryDAO();
         try {
             id = gate.findUserBySignIn(username, password);
         } catch (SQLException e) {

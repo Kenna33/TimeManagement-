@@ -32,7 +32,13 @@ import javax.swing.border.SoftBevelBorder;
 
 import data.Group;
 
-
+/*
+ * This class has the responsibility of the user interface 
+ * pop up, listening for user input, then delegating the 
+ * responsibilities of creating a group to the UserService class
+ * Implement prototype design by creating instance of UserService 
+ * in constructor 
+ */
 public class AddGroupPopUp extends JFrame {
 
     /**
@@ -105,7 +111,7 @@ public class AddGroupPopUp extends JFrame {
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.setHorizontalAlignment(SwingConstants.LEFT);
         horizontalBox.add(cancelBtn);
-        //Command pattern
+        //Command pattern- waiting for user response 
         cancelBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -125,6 +131,7 @@ public class AddGroupPopUp extends JFrame {
         final JLabel warningLabel = new JLabel("");
         warningLabel.setForeground(Color.RED);
         contentPane.add(warningLabel, BorderLayout.NORTH);
+        //Command pattern 
         saveBtn.addActionListener(new ActionListener() {
 
             @Override

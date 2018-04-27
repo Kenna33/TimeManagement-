@@ -16,6 +16,10 @@ import java.util.Observable;
 
 import data.*;
 
+/*
+ * This class is responsible for using the FactoryDAO to carry out the actions
+ * called by the user and return a response to whether it was successful or not
+ */
 public class UserService extends Observable implements UserServiceInterface {
     UserAccount user;
     private List<Group> groupList;
